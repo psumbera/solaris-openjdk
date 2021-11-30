@@ -4,7 +4,7 @@ VERSION=12
 
 . common.sh
 
-BOOT_JDK="$BUILD_DIR/jdk11u/build/solaris-x86_64-normal-server-release/jdk"
+BOOT_JDK="$BUILD_DIR/jdk11u/build/solaris-$JDK_PLATFORM-normal-server-release/jdk"
 PATH="$STUDIO:/usr/bin"
 
 CONFIGURE_OPTIONS+=" --with-boot-jdk=$BOOT_JDK"

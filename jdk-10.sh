@@ -14,7 +14,7 @@ function fix_cups_versioning {
   done
 }
 
-BOOT_JDK="$WS/build_dir/jdk9u/build/solaris-x86_64-normal-server-release/jdk"
+BOOT_JDK="$BUILD_DIR/jdk9u/build/solaris-$JDK_PLATFORM-normal-server-release/jdk"
 PATH="$STUDIO:/usr/bin"
 
 CONFIGURE_OPTIONS+=" --with-boot-jdk=$BOOT_JDK"

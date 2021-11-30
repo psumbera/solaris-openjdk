@@ -7,6 +7,12 @@ else
    SRC_DIR="jdk${VERSION}"
 fi
 
+if [ `uname -p` = 'sparc' ] ; then
+  JDK_PLATFORM="sparcv9"
+else
+  JDK_PLATFORM="x86_64"
+fi
+
 STUDIO="/opt/solarisstudio12.4/bin"
 
 GCC=/usr/gcc/10/bin/gcc
