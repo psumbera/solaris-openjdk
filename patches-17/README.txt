@@ -7,6 +7,41 @@ Most patches -p0
 
 JDK17:
 
+17.0.5
+
+A number of functions centralised into os_posix
+
+17.0.4
+
+Build broken by https://www.illumos.org/issues/14418. That did 2
+things -  (1) exposed memcntl and meminfo by default, and (2) changed
+the signature for memcntl from caddr_t to void so there's a
+mismatch. The fix adopted is to modify the internal java signature for
+memcntl to the new version, which still allows builds on older
+releases as the old definition in sys/mman.h was effectively invisible
+there.
+
+
+Remove some unnecessary patches
+src/java.base/unix/native/libjli/java_md.h
+ - new comment is good
+src/java.desktop/unix/native/common/awt/fontpath.c
+ - shouldn't need to check for SunOS 5.8/5.9
+Remove HS_DTRACE_WORKAROUND_TAIL_CALL_BUG, the bug it works around
+  was fixed in 2008
+Remove remaining SUNPRO and related MLIB_NO_LIBSUNMATH checks
+src/java.desktop/unix/native/common/awt/X11Color.c
+ - the complexity is over 20 years old and no longer relevant
+make/autoconf/flags-cflags.m4
+ - adding -DTRIMMED is useless
+src/java.desktop/unix/native/libawt_xawt/awt/awt_InputMethod.c
+ - unnecessary on illumos and current Solaris (and my S10 system too)
+use the 64-bit rdtsc variant
+
+17.0.2
+
+illumos-port-15.patch to fix the broken ld check
+
 17-35
 
 RC1, no changes

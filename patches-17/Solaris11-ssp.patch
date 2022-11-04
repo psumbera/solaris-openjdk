@@ -31,12 +31,12 @@ gmake[3]: *** [lib/CompileJvm.gmk:176: /tmp/build_psumbera/openjdk-15/jdk15u-jdk
  
 --- jdk16u-jdk-16.0.0-0/make/test/JtregNativeHotspot.gmk
 +++ jdk16u-jdk-16.0.0-0/make/test/JtregNativeHotspot.gmk
-@@ -867,11 +867,12 @@
+@@ -863,11 +863,12 @@
      BUILD_HOTSPOT_JTREG_EXECUTABLES_LIBS_exeFPRegs := -ldl
      BUILD_HOTSPOT_JTREG_LIBRARIES_LIBS_libAsyncGetCallTraceTest := -ldl
  else
 +    BUILD_HOTSPOT_JTREG_EXECUTABLES_LIBS_exeFPRegs := -lssp
-   BUILD_HOTSPOT_JTREG_EXCLUDE += libtest-rw.c libtest-rwx.c libTestJNI.c \
+   BUILD_HOTSPOT_JTREG_EXCLUDE += libtest-rw.c libtest-rwx.c \
        exeinvoke.c exestack-gap.c exestack-tls.c libAsyncGetCallTraceTest.cpp
  endif
  

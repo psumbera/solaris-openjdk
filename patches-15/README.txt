@@ -1,236 +1,112 @@
-This is originally derived from the pkgsrc-joyent set for openjdk11,
-considerably modified. Cut from the jdk15 patches as of jdk15+32.
-
-See also README-zero.txt for patches to build a project zero variant.
+This is derived from the pkgsrc-joyent set for openjdk11, building on
+my openjdk14 set.
 
 Most patches -p0
 
-JDK17:
+JDK15:
 
-17-35
+jdk15 is likely to see more significant changes as it's cut from a
+rapidly evolving trunk, whereas older versions were more static,
+getting bugfixes on a relatively static base
 
-RC1, no changes
+Up to 15+24, mainline had solaris support. As of 15+25, JEP 381 has
+removed that, so we have to put it back. This will have to be done far
+more cleanly as things evolve, as the patches will be on an
+increasingly divergent base.
 
-17-29,17-30,17-31,17-32,17-33,17-34
+As of 15+27, jdk15 is in rampdown so should be relatively stable.
 
-No changes
+This set currently based on jdk-15+33
 
-17-27,17-28
+openjdk15 fixes (besides fixing line number noise)
 
-No changes. Packaged 17-28.
+15.0.8
 
-17-26
+Build broken by https://www.illumos.org/issues/14418. That did 2
+things -  (1) exposed memcntl and meminfo by default, and (2) changed
+the signature for memcntl from caddr_t to void so there's a
+mismatch. The fix adopted is to modify the internal java signature for
+memcntl to the new version, which still allows builds on older
+releases as the old definition in sys/mman.h was effectively invisible
+there.
 
-First from the jdk17 stabilisation repository. Same changes as in the
-first jdk18 tag.
+15.0.7
 
-Remove extended file io workaround, it's 32-bit only
+Changes to signature of pd_reserve_memory,
+pd_attempt_reserve_memory_at, and Solaris::anon_mmap
 
-17-25
+15.0.6
 
-SecurityManager deprecation. Added suppression annotations (the way it
-was done for Windows), and cleaned up the line number noise.
+Again much patch noise.
 
-17-24
+15.0.5
 
-Line number noise.
+Quite a lot of patch noise and failures here.
+If patch noise was studio, just delete the patch entirely; some
+rationalisation was beneficial.
 
-Clean up some of the compiler warnings.
+NOTE:
 
-17-23
+make/hotspot/lib/CompileDtraceLibraries.gmk
+is Studio-specific, but we disable dtrace anyway so never hit it
 
-Line number noise.
+cc1plus: warning: unrecognized command line option '-Wno-cast-function-type'
+That's to do with freetype, I think.
 
-os::os_exception_wrapper signature; last argument is a JavaThread not
-a Thread. No impact as we don't actually use it.
+remove:
 
-17-22
+patch-make_autoconf_basics.m4
 
-Signature of reserve_memory_special and pd_reserve_memory_special has
-changed to pass the page size. All we do is change the signature as
-it's a no-op on solaris.
+patch-make_autoconf_flags-ldflags.m4
+  broken as of 15+19
 
-17-21
+modified:
 
-Line number noise.
+patch-make_lib_Lib-jdk.crypto.ucrypto.gmk 
+patch-make_lib_LibCommon.gmk 
+tribblix-agent-mt.patch 
+tribblix-demangle2.patch
+patch-make_lib_Awt2dLibraries.gmk 
+patch-make_launcher_LauncherCommon.gmk 
+tribblix-LauncherCommon.patch 
+  files moved around in 15+21
 
-17-20
+patch-make_autoconf_libraries.m4
+tribblix-flags-cflags.patch
+tribblix-flags-ldflags.patch
+  surrounds changed
 
-Quite a lot of changes this time around.
+tribblix-LauncherCommon.patch
 
-No more aot, so remove patches for that.
+add:
 
-src/hotspot/share/cds/classListParser.cpp has moved to
-src/hotspot/share/cds/classListParser.cpp
+tribblix-flags-ldflags3.patch
+  fixes -pie and --shlib-undefined
 
-suspend/resume has been essentially gutted
+tribblix-demangle1.patch 
+tribblix-demangle2.patch 
+tribblix-demangle3.patch 
+tribblix-demangle4.patch 
+  replace the studio demangle with the gcc one
 
-Assembler files are all .S not .s now; and the way it's called has
-changed, so we need to just forget about forcing the studio assembler
+Post JEP-381:
 
-Other changes made:
-
-Also removed solstudio, which also cleans up C_FLAG_REORDER
-
-Cleared out some of the sparc pieces
-
-Gutted ucrypto
-
-17-19
-
-.mx.jvmci has gone, we don't need it anyway
-
-Boot jdk requirement bumped to 16.
-This triggers a lot of noisy
-"SIGSEGV happened inside stack but outside yellow and red zone."
-warnings during the build, but they appear harmless.
-
-17-18
-
-Don't patch jib-profiles.js. We don't use this, there aren't any AIX
-entries, so putting ours in is a waste of effort.
-
-Remove the nbproject patches; they're either wrong or irrelevant, or both.
-
-The boolAtPut flag stuff is no more. The whole JVMFlag machinery has
-been reworked. Renamed to set_bool.
-
-Remove patching of JvmOverrideFiles.gmk when we then disable the
-patch later.
-
-17-17
-
-No significant changes
-
-17-16
-
-Some patch noise this time. Some of the SPARC-related noise simply
-removed.
-
-17-15
-
-No changes this time
-
-17-14
-
-Remove patch to c1_LIRAssembler.cpp as it's only for SPARC
-Maybe lir_pack/lir_unpack could go too?
-
-Tidied up Awt2dLibraries.gmk
-
-More centralization into os_posix: os::die() os::shutdown() os::abort()
-
-Tidy up some of the format noise
-
-17-13
-
-Remove the patches for lib-X11.m4; they're actually for S10, so we
-don't want them anyway. And remove the patch to XRBackendNative.c
-related to it which is also an S10 fixup.
-
-os::fork_and_exec has been centralized
-
-MetaspaceShared::is_in_trampoline_frame() has been removed
-
-17-12
-
-Remove saved_rbp_address_offset() from thread_solaris_x86.hpp
-
-There's also evidence of xattr support on some platforms having been
-added; it's not needed for the build so I've ignored it for now.
-
-17-11
-
-Fix memTracker.hpp; signature changed
-Don't patch deoptimization.cpp, it was SPARC-specific
-
-17-10
-
-No significant changes
-
-17-9
-
-No significant changes
-
-17-8
-
-Man os:: functions were centralized into os_posix.inline.hpp, so
-needed to remove our duplicates from os_solaris.inline.hpp and
-os_solaris.cpp. Mostly the central copy was identical, the only odd
-one was that the Solaris os::connect had some funky error handling
-
-17-7
-
-CLOCK_MONOTONIC is now just on.
-Needed to remove os::supports_monotonic_clock() from os_solaris.inline.hpp
-Remove javaTimeMillis() and javaTimeSystemUTC() and javaTimeNanos()
-and javaTimeNanos_info() from os_solaris.cpp
-Parker::park and Parker::unpark no longer compile, park.hpp has been
-modified so we need to make sure _counter is present in
-os_solaris.hpp; that makes it compile but it then crashes the jvm in there
-The posix variant removed the guarantee in PlatformParker; we need to
-do the same, fix the signature, and provide an implementation.
-(The PlatformParker piece took a lot of effort.)
-
-17-6
-
-we now have perfMemory_posix.cpp, so perfMemory_solaris.ccp should be
-removed or the build fails with multiply defined symbols
-
-17-5
-
-make/CompileJavaModules.gmk has mostly been gutted; ignore our patch
-as it seem to build fine without
-
-os.cpp needs to include alloca.h, see illumos-port-11.patch
-
-17-4
-
-src/jdk.hotspot.agent/share/classes/sun/jvm/hotspot/asm/Disassembler.java
-has been refactored, but the new version appears to do the same thing
-as we need in a platform-independent manner, so drop our patch
-
-17-3
-
-make/common/Modules.gmk has been completely redone; remove our patch
-
-17-2
-
-More memory stuff; pd_uncommit_memory pd_reserve_memory
-pd_attempt_reserve_memory_at have changed signatures, with an extra
-bool argument (that appears to be unused, at least linux and aix
-don't make any use of it; this appears to be a Mac thing)
-
-17-0/17-1
-
-Quite a lot of refactoring of the toolchain stuff.
-
-The page_size rework is really quite massive. The old _page_sizes was
-an array you manipulated directly. It's now a set. This needs various
-changes:
-
-os::Solaris::is_valid_page_size() is just _page_sizes.contains()
-
-Not strictly broken, but easy to fix: in mpss_sanity_check, we can
-simplify the getpagesizes() stuff as we know we're modern
-
-Rework listing of valid page sizes
-
-This is a bit ugly because we don't really end up using the new
-_page_sizes, but instead emulate the old array. Still, I can't find
-examples of how the new way is supposed to work on any other platform.
-
-Also need to implement print_memory_mappings, as a no-op (like AIX is)
-
-That's enough to make it compile; it blows up with an arithmetic
-exception, apparently inside apply_ergo(). In mpss_sanity_check, we
-need to make sure page_size (which is really a pointer to
-_large_page_size) is initialized to the largest valid page size.
+illumos-port-1.patch
+  Drop use of UseLWPSynchronization (as opposed to restoring it)
+illumos-port-2.patch
+  Restore native fopen/fclose/pathconf in
+  src/java.base/unix/native/libnio/fs/UnixNativeDispatcher.c
+illumos-port-3.patch
+  and the java counterpart
+illumos-port-4.patch
+  restore newFileChannel variant that solaris uses
+illumos-port-5.patch
+  restore isSpecial() - this is one that should be fixed at the consumer
 
 Build:
 
 env PATH=/usr/bin:/usr/sbin:/usr/sfw/bin:/usr/gnu/bin bash ./configure \
---enable-unlimited-crypto --with-boot-jdk=/usr/jdk/instances/jdk16 \
+--enable-unlimited-crypto --with-boot-jdk=/usr/jdk/instances/jdk14 \
 --with-native-debug-symbols=none \
 --with-toolchain-type=gcc \
 --disable-dtrace \

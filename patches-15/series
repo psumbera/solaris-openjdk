@@ -1,12 +1,10 @@
 java-solaris-sparc.patch -R
 illumos-cpu_microcode_revision.patch
 illumos-port-1.patch
-illumos-port-11.patch
 illumos-port-2.patch
 illumos-port-3.patch
 illumos-port-4.patch
 illumos-port-5.patch
-illumos-port-7.patch
 patch-make_autoconf_flags-cflags.m4 -p0
 patch-make_autoconf_jdk-options.m4 -p0
 patch-make_GenerateLinkOptData.gmk -p0
@@ -26,8 +24,6 @@ tribblix-flags-ldflags.patch -p0
 tribblix-flags-ldflags2.patch -p0
 tribblix-flags-ldflags3.patch -p0
 tribblix-wait.patch -p0
-omnios-headless.patch
-fontpath.patch
 patch-make_autoconf_lib-x11.m4 -p0
 patch-make_autoconf_libraries.m4 -p0
 patch-make_autoconf_spec.gmk.in -p0
@@ -45,7 +41,6 @@ patch-src_java.base_solaris_native_libnio_ch_DevPollArrayWrapper.c -p0
 patch-src_jdk.crypto.ec_share_native_libsunec_ECC__JNI.cpp -p0
 Solaris11-EM_486.patch -p1
 Solaris11-TRAPNO.patch -p1
-Solaris11-memcntl.patch -p1
 Solaris11-ssp.patch -p1
 Solaris11-KPIC.patch -p1
 Solaris11-as-m64.patch -p1

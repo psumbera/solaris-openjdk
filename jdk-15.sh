@@ -19,8 +19,14 @@ CONFIGURE_OPTIONS+=" AS=/usr/gnu/bin/as"
 CONFIGURE_OPTIONS+=" CC=$GCC"
 CONFIGURE_OPTIONS+=" CXX=$GXX"
 
-hg clone ${JDK_REPO}/$SRC_DIR "$BUILD_DIR"/$SRC_DIR
+git clone ${JDK_GITHUB_REPO}/$SRC_DIR "$BUILD_DIR"/$SRC_DIR
 cd "$BUILD_DIR"/$SRC_DIR
+
+# There are some troubles with latest OpenJDK 15 update commits. For now
+# let's build sources at the same commit as it's in original Mercurial
+# repo.
+git checkout jdk-15.0.9-ga
+#git checkout 5c924b4d7b14d0984b875c191a7367d9dbd7853f
 
 apply_patch_series
 

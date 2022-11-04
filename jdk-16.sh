@@ -21,6 +21,7 @@ CONFIGURE_OPTIONS+=" CXX=$GXX"
 
 git clone ${JDK_GITHUB_REPO}/$SRC_DIR "$BUILD_DIR"/$SRC_DIR
 cd "$BUILD_DIR"/$SRC_DIR
+git checkout jdk-16.0.2-ga
 
 apply_patch_series
 

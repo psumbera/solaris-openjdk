@@ -18,8 +18,9 @@ CONFIGURE_OPTIONS+=" AS=/usr/gnu/bin/as"
 CONFIGURE_OPTIONS+=" CC=$GCC"
 CONFIGURE_OPTIONS+=" CXX=$GXX"
 
-hg clone ${JDK_REPO}/$SRC_DIR "$BUILD_DIR"/$SRC_DIR
+git clone ${JDK_GITHUB_REPO}/$SRC_DIR "$BUILD_DIR"/$SRC_DIR
 cd "$BUILD_DIR"/$SRC_DIR
+git checkout jdk-13.0.11-ga
 
 apply_patch_series
 

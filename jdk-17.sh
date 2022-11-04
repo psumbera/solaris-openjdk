@@ -4,7 +4,7 @@ VERSION=17
 
 . common.sh
 
-BOOT_JDK="$BUILD_DIR/jdk16/build/solaris-$JDK_PLATFORM-server-release/jdk"
+BOOT_JDK="$BUILD_DIR/jdk16u/build/solaris-$JDK_PLATFORM-server-release/jdk"
 PATH="/usr/bin:/usr/gnu/bin"
 
 CONFIGURE_OPTIONS+=" --enable-unlimited-crypto"
@@ -21,6 +21,7 @@ CONFIGURE_OPTIONS+=" CXX=$GXX"
 
 git clone ${JDK_GITHUB_REPO}/$SRC_DIR "$BUILD_DIR"/$SRC_DIR
 cd "$BUILD_DIR"/$SRC_DIR
+git checkout jdk-17.0.5-ga
 
 apply_patch_series
 
