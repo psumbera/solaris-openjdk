@@ -12,6 +12,7 @@ You just need to have:
 - Git
 - JDK 8
 - GCC 10
+- Solaris Studio 12.4 (latest supported version! Release version isn't enough)
 - Internet access for OpenJDK repositories
 
 Alternatively you can use your OpenJDK repository mirror and set it via
