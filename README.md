@@ -49,3 +49,5 @@ Building Openjdk 17...
 After the build you should inspect build_dir/ for your OpenJDK binaries.
 
 Your build log files will be available in logs/ directory.
+
+You can use then archives.sh script which will create tar archives.
