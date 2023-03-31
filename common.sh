@@ -8,6 +8,16 @@ else
   JDK_PLATFORM="x86_64"
 fi
 
+if [ -z $BOOT_JDK ] ; then
+  if [ $VERSION -eq 9 ] ; then
+    BOOT_JDK="/usr/jdk/instances/jdk1.8.0"
+  elif [ $VERSION -lt 13 ] ; then
+    BOOT_JDK="$BUILD_DIR/jdk$(($VERSION-1))u/build/solaris-$JDK_PLATFORM-normal-server-release/jdk"
+  else
+    BOOT_JDK="$BUILD_DIR/jdk$(($VERSION-1))u/build/solaris-$JDK_PLATFORM-server-release/jdk"
+  fi
+fi
+
 TOOLS_DIR="${SRC_DIR}_tools"
 
 STUDIO="/opt/solarisstudio12.4/bin"

@@ -17,7 +17,6 @@ function fix_cups_versioning {
   gsed -i 's;_CUPS_API_DEPRECATED(...);_CUPS_API_DEPRECATED();' my-cups-versioning.h
 }
 
-BOOT_JDK="/usr/jdk/instances/jdk1.8.0"
 PATH="$STUDIO:/usr/bin"
 
 CONFIGURE_OPTIONS+=" --with-boot-jdk=$BOOT_JDK"

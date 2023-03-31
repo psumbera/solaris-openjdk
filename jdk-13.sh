@@ -4,7 +4,6 @@ VERSION=13
 
 . common.sh
 
-BOOT_JDK="$BUILD_DIR/jdk12u/build/solaris-$JDK_PLATFORM-server-release/jdk"
 PATH="/usr/bin:/usr/gnu/bin"
 
 CONFIGURE_OPTIONS+=" --enable-unlimited-crypto"

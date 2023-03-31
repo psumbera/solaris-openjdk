@@ -17,7 +17,6 @@ function fix_cups_versioning {
   gsed -i 's;_CUPS_API_DEPRECATED(...);_CUPS_API_DEPRECATED();' my-cups-versioning.h
 }
 
-BOOT_JDK="$BUILD_DIR/jdk9u/build/solaris-$JDK_PLATFORM-normal-server-release/jdk"
 PATH="$STUDIO:/usr/bin"
 
 CONFIGURE_OPTIONS+=" --with-boot-jdk=$BOOT_JDK"

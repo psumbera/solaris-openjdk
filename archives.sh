@@ -4,7 +4,11 @@ WS="`pwd`"
 ARCHIVE_DIR="$WS/archives"
 mkdir -p $ARCHIVE_DIR
 
-. common.sh
+if [ `uname -p` = 'sparc' ] ; then
+  JDK_PLATFORM="sparcv9"
+else
+  JDK_PLATFORM="x86_64"
+fi
 
 for VERSION in {9..19}; do
   if [ $VERSION -lt 12 ] ; then
