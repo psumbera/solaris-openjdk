@@ -10,7 +10,7 @@ else
   JDK_PLATFORM="x86_64"
 fi
 
-for VERSION in {9..19}; do
+for VERSION in {9..20}; do
   if [ $VERSION -lt 12 ] ; then
     JAVADIR="./build_dir/jdk${VERSION}u/build/solaris-$JDK_PLATFORM-normal-server-release/images/jdk"
   else
