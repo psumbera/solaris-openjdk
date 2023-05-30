@@ -37,6 +37,9 @@ tribblix-flags-ldflags.patch -p0
 tribblix-flags-ldflags2.patch -p0
 tribblix-flags-ldflags3.patch -p0
 tribblix-wait.patch -p0
+tribblix-sparc1.patch
+tribblix-sparc2.patch
+tribblix-sparc3.patch
 Solaris11-EM_486.patch -p1
 Solaris11-TRAPNO.patch -p1
 Solaris11-memcntl.patch -p1

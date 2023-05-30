@@ -37,10 +37,13 @@ tribblix-demangle3.patch -p0
 tribblix-demangle4.patch -p0
 tribblix-flags-cflags.patch -p0
 tribblix-flags-ldflags3.patch -p0
+tribblix-sparc1.patch
+tribblix-sparc2.patch
+tribblix-sparc3.patch
 Solaris11-EM_486.patch -p1
 Solaris11-TRAPNO.patch -p1
 Solaris11-memcntl.patch -p1
 Solaris11-as-m64.patch -p1
 Solaris11-ssp.patch -p1
-Solaris11-gcc10.patch -p1
 Solaris11-no-tm_gmtoff.patch -p1
+Solaris11-sparc.patch -p1

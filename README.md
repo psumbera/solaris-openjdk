@@ -5,7 +5,8 @@ This project builds all OpenJDK versions from 9 till latest 20 for Solaris 11.4.
 Note that this was done based on great job of Peter Tribble:
 https://ptribble.blogspot.com/2021/12/keeping-java-alive-on-illumos.html
 
-At this time only amd64 platform is expected to work (not SPARC).
+At this time only amd64 platform is expected to work (for SPARC it can build
+up to version 14 only).
 
 You just need to have:
 - Oracle Solaris 11.4 (at least S11.4.24) with installed system header files
