@@ -1,6 +1,6 @@
 # Oracle Solaris OpenJDK Builder
 
-This project builds all OpenJDK versions from 9 till latest 20 for Solaris 11.4.
+This project builds all OpenJDK versions from 9 till latest 21 for Solaris 11.4.
 
 Note that this was done based on great job of Peter Tribble:
 https://ptribble.blogspot.com/2021/12/keeping-java-alive-on-illumos.html

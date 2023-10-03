@@ -1,0 +1,13 @@
+diff --git a/src/java.desktop/unix/native/libpipewire/include/spa/param/audio/raw.h b/src/java.desktop/unix/native/libpipewire/include/spa/param/audio/raw.h
+index 54052f75311..6b5f1582071 100644
+--- a/src/java.desktop/unix/native/libpipewire/include/spa/param/audio/raw.h
++++ b/src/java.desktop/unix/native/libpipewire/include/spa/param/audio/raw.h
+@@ -11,7 +11,7 @@ extern "C" {
+ 
+ #include <stdint.h>
+ 
+-#if !defined(__FreeBSD__) && !defined(__MidnightBSD__) && !defined(AIX)
++#if !defined(__FreeBSD__) && !defined(__MidnightBSD__) && !defined(AIX) && !defined(__sun__)
+ #include <endian.h>
+ #endif
+ 

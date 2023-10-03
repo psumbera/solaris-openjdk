@@ -11,6 +11,7 @@ git -C jdk17u pull 2>/dev/null || git clone https://github.com/openjdk/jdk17u
 git -C jdk18u pull 2>/dev/null || git clone https://github.com/openjdk/jdk18u
 git -C jdk19u pull 2>/dev/null || git clone https://github.com/openjdk/jdk19u
 git -C jdk20u pull 2>/dev/null || git clone https://github.com/openjdk/jdk20u
+git -C jdk21u pull 2>/dev/null || git clone https://github.com/openjdk/jdk21u
 # Downloads build tools.
 test -f make-4.2.1.tar.bz2 || wget https://ftp.gnu.org/gnu/make/make-4.2.1.tar.bz2
 test -f autoconf-2.69.tar.xz || wget https://ftp.gnu.org/gnu/autoconf/autoconf-2.69.tar.xz

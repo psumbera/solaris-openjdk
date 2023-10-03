@@ -4,13 +4,29 @@ WS="`pwd`"
 ARCHIVE_DIR="$WS/archives"
 mkdir -p $ARCHIVE_DIR
 
+BUILD_FROM_VER=0
+
+for i in "$@"; do
+  case "$i" in
+    --build-from=*)
+      BUILD_FROM_VER=$((0+"${i#*=}"))
+      ;;
+  esac
+done
+
 if [ `uname -p` = 'sparc' ] ; then
   JDK_PLATFORM="sparcv9"
 else
   JDK_PLATFORM="x86_64"
 fi
 
-for VERSION in {9..20}; do
+for VERSION in {9..21}; do
+
+  if [ $VERSION -lt $BUILD_FROM_VER ] ; then
+    echo "Skipping Openjdk $VERSION archive creation."
+    continue
+  fi
+
   if [ $VERSION -lt 12 ] ; then
     JAVADIR="./build_dir/jdk${VERSION}u/build/solaris-$JDK_PLATFORM-normal-server-release/images/jdk"
   else
