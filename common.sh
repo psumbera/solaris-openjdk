@@ -40,8 +40,8 @@ function apply_patch_series {
     gpatch --batch --forward --strip=1 $args -i "$WS/patches-$VERSION/$patch"
   done
   # Apply SPARC only patches if there are any.
-  mach | grep sparc > /dev/null || return
-  test -f "$WS/patches-$VERSION/series-sparc-only" || return
+  mach | grep sparc > /dev/null || return 0
+  test -f "$WS/patches-$VERSION/series-sparc-only" || return 0
   cat "$WS/patches-$VERSION/series-sparc-only" | while read patch args; do
     echo $patch | grep ^\# > /dev/null && continue
     gpatch --batch --forward --strip=1 $args -i "$WS/patches-$VERSION/$patch"
