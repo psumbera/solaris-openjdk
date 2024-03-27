@@ -6,7 +6,8 @@ Note that this was done based on great job of Peter Tribble:
 https://ptribble.blogspot.com/2021/12/keeping-java-alive-on-illumos.html
 
 At this time only amd64 platform is expected to work (for SPARC it can build
-up to version 16 only).
+up to version 17 only, but version 17 seems to be broken now).
+
 
 You just need to have:
 - Oracle Solaris 11.4 (at least S11.4.24) with installed system header files
@@ -75,7 +76,7 @@ bootstaping (at least when you have previous version).
 Alternately you can use your own bootstrap version.
 
 ```
-./build-all.sh --build-from=13 --boot-jdk=/export/home/build/jdk-13-bootstrap
+./build-all.sh --build-from=17 --boot-jdk=/export/home/build/jdk-17-bootstrap
 ```
 
 --

@@ -6,6 +6,23 @@ See also README-zero.txt for patches to build a project zero variant.
 Most patches -p0
 
 JDK17:
+17.0.8
+
+Reinstate make/data/charsetmapping/stdcs-solaris, removal broke the
+build.
+See illumos-port-16.patch
+
+Cleanup: remove TAR_CREATE_FILE_PARAM TAR_CREATE_EXTRA_PARAM
+
+Cleanup: Removed another STLPORT reference
+
+17.0.7
+
+Minor patch noise. Removed an STLPORT patch.
+
+17.0.6
+
+Minor patch noise.
 
 17.0.5
 
