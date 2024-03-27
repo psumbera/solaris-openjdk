@@ -76,7 +76,7 @@ bootstaping (at least when you have previous version).
 Alternately you can use your own bootstrap version.
 
 ```
-./build-all.sh --build-from=17 --boot-jdk=/export/home/build/jdk-17-bootstrap
+./build-all.sh --build-from=17 --boot-jdk=/export/home/build/jdk-16-bootstrap
 ```
 
 --
