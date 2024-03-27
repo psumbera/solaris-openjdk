@@ -1,0 +1,9 @@
+restore_cpu_sparc.patch
+restore_os_cpu_solaris_sparc.patch
+sparc-bitness.patch
+TemplateInterpreterGenerator-sparc.patch
+c1-sparc.patch
+jfr-sparc.patch
+memset-sparc.patch
+stack_bias.25.patch
+sparc-misc.patch

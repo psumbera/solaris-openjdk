@@ -22,8 +22,13 @@ TOOLS_DIR="${SRC_DIR}_tools"
 
 STUDIO="/opt/solarisstudio12.4/bin"
 
+if [ -d /usr/gcc/10 ] ; then
 GCC=/usr/gcc/10/bin/gcc
 GXX=/usr/gcc/10/bin/g++
+else
+GCC=/usr/gcc/11/bin/gcc
+GXX=/usr/gcc/11/bin/g++
+fi
 
 mkdir -p "$BUILD_DIR"
 rm -rf "$BUILD_DIR"/$SRC_DIR "$BUILD_DIR"/$TOOLS_DIR
@@ -31,6 +36,13 @@ test -z $JDK_GITHUB_REPO && JDK_GITHUB_REPO=https://github.com/openjdk
 
 function apply_patch_series {
   cat "$WS/patches-$VERSION/series" | while read patch args; do
+    echo $patch | grep ^\# > /dev/null && continue
+    gpatch --batch --forward --strip=1 $args -i "$WS/patches-$VERSION/$patch"
+  done
+  # Apply SPARC only patches if there are any.
+  mach | grep sparc > /dev/null || return
+  test -f "$WS/patches-$VERSION/series-sparc-only" || return
+  cat "$WS/patches-$VERSION/series-sparc-only" | while read patch args; do
     echo $patch | grep ^\# > /dev/null && continue
     gpatch --batch --forward --strip=1 $args -i "$WS/patches-$VERSION/$patch"
   done
