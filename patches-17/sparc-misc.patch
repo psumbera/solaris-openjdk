@@ -40,7 +40,7 @@ diff -ur jdk-jdk-15-26/src/hotspot/cpu/zero/bytecodeInterpreter_zero.hpp jdk-jdk
 diff -ur jdk-jdk-15-26/src/hotspot/os/posix/os_posix.cpp jdk-jdk-15-25/src/hotspot/os/posix/os_posix.cpp
 --- jdk-jdk-15-26/src/hotspot/os/posix/signals_posix.cpp	   :: 
 +++ jdk-jdk-15-25/src/hotspot/os/posix/signals_posix.cpp	   :: 
-@@ -944,6 +944,21 @@
+@@ -923,6 +923,21 @@
  #if defined(IA64) && !defined(AIX)
      { SIGSEGV, SEGV_PSTKOVF, "SEGV_PSTKOVF", "Paragraph stack overflow" },
  #endif
@@ -142,12 +142,12 @@ diff -ur jdk-jdk-15-26/src/hotspot/share/compiler/oopMap.cpp jdk-jdk-15-25/src/h
            // word so adjust loc to point at the right place.
 --- a/src/hotspot/share/compiler/compilerDefinitions.cpp	Wed Feb  3 18:05:52 2021
 +++ b/src/hotspot/share/compiler/compilerDefinitions.cpp	Sun Feb 11 11:04:34 2024
-@@ -400,7 +400,7 @@
-     }
- #endif
- 
--#if defined AARCH64
-+#if defined SPARC || defined AARCH64
+@@ -393,7 +393,7 @@
+   if (CompilerConfig::is_tiered() && CompilerConfig::is_c2_enabled()) {
+ #ifdef COMPILER2
+     // Some inlining tuning
+-#if defined(X86) || defined(AARCH64) || defined(RISCV64)
++#if defined(SPARC) || defined(X86) || defined(AARCH64) || defined(RISCV64)
      if (FLAG_IS_DEFAULT(InlineSmallCode)) {
        FLAG_SET_DEFAULT(InlineSmallCode, 2500);
      }
@@ -341,7 +341,7 @@ diff -ur jdk-jdk-15-26/src/hotspot/share/opto/generateOptoStub.cpp jdk-jdk-15-25
 +
    // Drop in the last_Java_sp.  last_Java_fp is not touched.
    // Always do this after the other "last_Java_frame" fields are set since
-   // as soon as last_Java_sp != NULL the has_last_Java_frame is true and
+   // as soon as last_Java_sp != nullptr the has_last_Java_frame is true and
 @@ -222,8 +229,11 @@
  
    // Clear last_Java_sp
@@ -400,16 +400,16 @@ diff -ur jdk-jdk-15-26/src/hotspot/share/runtime/abstract_vm_version.cpp jdk-jdk
                   AMD64_ONLY("amd64")             \
                   IA32_ONLY("x86")                \
                   IA64_ONLY("ia64")               \
--                 S390_ONLY("s390")
+-                 S390_ONLY("s390")               \
 +                 S390_ONLY("s390")               \
-+                 SPARC_ONLY("sparc")
++                 SPARC_ONLY("sparc")             \
+                  RISCV64_ONLY("riscv64")
  #endif // !ZERO
  #endif // !CPU
- 
 diff -ur jdk-jdk-15-26/src/hotspot/share/runtime/deoptimization.cpp jdk-jdk-15-25/src/hotspot/share/runtime/deoptimization.cpp
 --- jdk-jdk-15-26/src/hotspot/share/runtime/deoptimization.cpp	   :: 
 +++ jdk-jdk-15-25/src/hotspot/share/runtime/deoptimization.cpp	   :: 
-@@ -1188,7 +1188,12 @@
+@@ -1217,7 +1217,12 @@
  #ifdef _LP64
        jlong res = (jlong)low->get_int();
  #else
@@ -422,7 +422,7 @@ diff -ur jdk-jdk-15-26/src/hotspot/share/runtime/deoptimization.cpp jdk-jdk-15-2
  #endif
        obj->long_at_put(index, res);
        break;
-@@ -1217,7 +1222,12 @@
+@@ -1246,7 +1251,12 @@
    #ifdef _LP64
          jlong res = (jlong)low->get_int();
    #else
@@ -435,7 +435,7 @@ diff -ur jdk-jdk-15-26/src/hotspot/share/runtime/deoptimization.cpp jdk-jdk-15-2
    #endif
          obj->int_at_put(index, (jint)*((jint*)&res));
          obj->int_at_put(++index, (jint)*(((jint*)&res) + 1));
-@@ -1362,7 +1372,12 @@
+@@ -1391,7 +1401,12 @@
  #ifdef _LP64
          jlong res = (jlong)low->get_int();
  #else
@@ -524,7 +524,7 @@ diff -ur jdk-jdk-15-26/src/hotspot/share/utilities/macros.hpp jdk-jdk-15-25/src/
 diff -ur jdk-jdk-15-26/src/java.base/share/conf/security/java.security jdk-jdk-15-25/src/java.base/share/conf/security/java.security
 --- jdk-jdk-15-26/src/java.base/share/conf/security/java.security	   :: 
 +++ jdk-jdk-15-25/src/java.base/share/conf/security/java.security	   :: 
-@@ -119,6 +119,12 @@
+@@ -118,6 +118,12 @@
  #   jdk.security.provider.preferred=AES/GCM/NoPadding:SunJCE, \
  #         MessageDigest.SHA-256:SUN, Group.HmacSHA2:SunJCE
  #
@@ -3346,8 +3346,8 @@ diff -ur jdk-jdk-15-26/src/jdk.hotspot.agent/share/classes/sun/jvm/hotspot/utili
  
    public static boolean knownCPU(String cpu) {
      final String[] KNOWN =
--        new String[] {"i386", "x86", "x86_64", "amd64", "ppc64", "ppc64le", "aarch64"};
-+        new String[] {"i386", "x86", "x86_64", "amd64", "sparc", "sparcv9", "ppc64", "ppc64le", "aarch64"};
+-        new String[] {"i386", "x86", "x86_64", "amd64", "ppc64", "ppc64le", "aarch64", "riscv64"};
++        new String[] {"i386", "x86", "x86_64", "amd64", "sparc", "sparcv9", "ppc64", "ppc64le", "aarch64", "riscv64"};
  
      for(String s : KNOWN) {
        if(s.equals(cpu))
@@ -3387,7 +3387,7 @@ diff -ur jdk-jdk-15-26/src/jdk.internal.vm.ci/share/classes/jdk/vm/ci/hotspot/Ho
 diff -ur jdk-jdk-15-26/src/jdk.sctp/unix/native/libsctp/SctpChannelImpl.c jdk-jdk-15-25/src/jdk.sctp/unix/native/libsctp/SctpChannelImpl.c
 --- jdk-jdk-15-26/src/jdk.sctp/unix/native/libsctp/SctpChannelImpl.c	   :: 
 +++ jdk-jdk-15-25/src/jdk.sctp/unix/native/libsctp/SctpChannelImpl.c	   :: 
-@@ -488,6 +488,20 @@
+@@ -485,6 +485,20 @@
                  bufp = newBuf;
                  rv += rvSAVE;
              }
@@ -3426,7 +3426,7 @@ diff -ur jdk-jdk-15-26/src/utils/hsdis/hsdis.c jdk-jdk-15-25/src/utils/hsdis/hsd
  #endif
 --- old/make/test/JtregNativeHotspot.gmk	2020-05-20 17:59:33.301561154 -0700
 +++ new/make/test/JtregNativeHotspot.gmk	2020-05-20 17:59:32.909553627 -0700
-@@ -850,6 +850,10 @@
+@@ -852,6 +852,10 @@
  ################################################################################
  
  # Platform specific setup

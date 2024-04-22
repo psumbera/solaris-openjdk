@@ -4,9 +4,11 @@ This project builds all OpenJDK versions from 9 till latest 21 for Solaris 11.4.
 
 Note that this was done based on great job of Peter Tribble:
 https://ptribble.blogspot.com/2021/12/keeping-java-alive-on-illumos.html
+https://github.com/ptribble/jdk-sunos-patches
+https://pkgs.tribblix.org/openjdk/sparc-solaris/
 
 At this time only amd64 platform is expected to work (for SPARC it can build
-up to version 17 only, but version 17 seems to be broken now).
+up to version 17 only).
 
 
 You just need to have:

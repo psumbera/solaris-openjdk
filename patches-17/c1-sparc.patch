@@ -13,7 +13,7 @@ diff -ur a/src/hotspot/share/c1/c1_Compiler.cpp b/src/hotspot/share/c1/c1_Compil
 diff -ur a/src/hotspot/share/c1/c1_GraphBuilder.cpp b/src/hotspot/share/c1/c1_GraphBuilder.cpp
 --- a/src/hotspot/share/c1/c1_GraphBuilder.cpp	   :: 
 +++ b/src/hotspot/share/c1/c1_GraphBuilder.cpp	   :: 
-@@ -4055,7 +4055,7 @@
+@@ -4056,7 +4056,7 @@
              if (ciMethod::is_consistent_info(callee, target)) {
                Bytecodes::Code bc = target->is_static() ? Bytecodes::_invokestatic : Bytecodes::_invokevirtual;
                ignore_return = ignore_return || (callee->return_type()->is_void() && !target->return_type()->is_void());
@@ -22,7 +22,7 @@ diff -ur a/src/hotspot/share/c1/c1_GraphBuilder.cpp b/src/hotspot/share/c1/c1_Gr
                  return true;
                }
              } else {
-@@ -4126,7 +4126,7 @@
+@@ -4127,7 +4127,7 @@
            // We don't do CHA here so only inline static and statically bindable methods.
            if (target->is_static() || target->can_be_statically_bound()) {
              Bytecodes::Code bc = target->is_static() ? Bytecodes::_invokestatic : Bytecodes::_invokevirtual;
@@ -34,43 +34,55 @@ diff -ur a/src/hotspot/share/c1/c1_GraphBuilder.cpp b/src/hotspot/share/c1/c1_Gr
 diff -ur a/src/hotspot/share/c1/c1_LIR.cpp b/src/hotspot/share/c1/c1_LIR.cpp
 --- a/src/hotspot/share/c1/c1_LIR.cpp	   :: 
 +++ b/src/hotspot/share/c1/c1_LIR.cpp	   :: 
-@@ -237,9 +237,10 @@
+@@ -240,13 +240,14 @@
  }
  
  
 -LIR_OpBranch::LIR_OpBranch(LIR_Condition cond, BlockBegin* block)
 +LIR_OpBranch::LIR_OpBranch(LIR_Condition cond, BasicType type, BlockBegin* block)
+ #ifdef RISCV
+   : LIR_Op2(lir_branch, cond, LIR_OprFact::illegalOpr, LIR_OprFact::illegalOpr, (CodeEmitInfo*)NULL)
+ #else
    : LIR_Op(lir_branch, LIR_OprFact::illegalOpr, (CodeEmitInfo*)NULL)
    , _cond(cond)
+ #endif
 +  , _type(type)
    , _label(block->label())
    , _block(block)
    , _ublock(NULL)
-@@ -246,9 +247,10 @@
+@@ -253,13 +254,14 @@
    , _stub(NULL) {
  }
  
 -LIR_OpBranch::LIR_OpBranch(LIR_Condition cond, CodeStub* stub) :
 +LIR_OpBranch::LIR_OpBranch(LIR_Condition cond, BasicType type, CodeStub* stub) :
+ #ifdef RISCV
+   LIR_Op2(lir_branch, cond, LIR_OprFact::illegalOpr, LIR_OprFact::illegalOpr, (CodeEmitInfo*)NULL)
+ #else
    LIR_Op(lir_branch, LIR_OprFact::illegalOpr, (CodeEmitInfo*)NULL)
    , _cond(cond)
+ #endif
 +  , _type(type)
    , _label(stub->entry())
    , _block(NULL)
    , _ublock(NULL)
-@@ -255,9 +257,10 @@
+@@ -266,13 +268,14 @@
    , _stub(stub) {
  }
  
 -LIR_OpBranch::LIR_OpBranch(LIR_Condition cond, BlockBegin* block, BlockBegin* ublock)
 +LIR_OpBranch::LIR_OpBranch(LIR_Condition cond, BasicType type, BlockBegin* block, BlockBegin* ublock)
+ #ifdef RISCV
+   : LIR_Op2(lir_cond_float_branch, cond, LIR_OprFact::illegalOpr, LIR_OprFact::illegalOpr, (CodeEmitInfo*)NULL)
+ #else
    : LIR_Op(lir_cond_float_branch, LIR_OprFact::illegalOpr, (CodeEmitInfo*)NULL)
    , _cond(cond)
+ #endif
 +  , _type(type)
    , _label(block->label())
    , _block(block)
    , _ublock(ublock)
-@@ -1421,7 +1424,7 @@
+@@ -1520,7 +1523,7 @@
      // Emit an explicit null check and deoptimize if opr is null
      CodeStub* deopt = new DeoptimizeStub(info, Deoptimization::Reason_null_check, Deoptimization::Action_none);
      cmp(lir_cond_equal, opr, LIR_OprFact::oopConst(NULL));
@@ -82,22 +94,26 @@ diff -ur a/src/hotspot/share/c1/c1_LIR.cpp b/src/hotspot/share/c1/c1_LIR.cpp
 diff -ur a/src/hotspot/share/c1/c1_LIR.hpp b/src/hotspot/share/c1/c1_LIR.hpp
 --- a/src/hotspot/share/c1/c1_LIR.hpp	   :: 
 +++ b/src/hotspot/share/c1/c1_LIR.hpp	   :: 
-@@ -1407,6 +1407,7 @@
- 
-  private:
+@@ -1708,6 +1708,7 @@
+ #ifndef RISCV
    LIR_Condition _cond;
+ #endif
 +  BasicType     _type;
    Label*        _label;
    BlockBegin*   _block;  // if this is a branch to a block, this is the block
-   BlockBegin*   _ublock; // if this is a float-branch, this is the unorderd block
-@@ -1413,21 +1414,23 @@
+   BlockBegin*   _ublock; // if this is a float-branch, this is the unordered block
+@@ -1714,31 +1715,33 @@
    CodeStub*     _stub;   // if this is a branch to a stub, this is the stub
  
   public:
 -  LIR_OpBranch(LIR_Condition cond, Label* lbl)
 +  LIR_OpBranch(LIR_Condition cond, BasicType type, Label* lbl)
+ #ifdef RISCV
+     : LIR_Op2(lir_branch, cond, LIR_OprFact::illegalOpr, LIR_OprFact::illegalOpr, (CodeEmitInfo*) NULL)
+ #else
      : LIR_Op(lir_branch, LIR_OprFact::illegalOpr, (CodeEmitInfo*) NULL)
      , _cond(cond)
+ #endif
 +    , _type(type)
      , _label(lbl)
      , _block(NULL)
@@ -113,12 +129,18 @@ diff -ur a/src/hotspot/share/c1/c1_LIR.hpp b/src/hotspot/share/c1/c1_LIR.hpp
 -  LIR_OpBranch(LIR_Condition cond, BlockBegin* block, BlockBegin* ublock);
 +  LIR_OpBranch(LIR_Condition cond, BasicType type, BlockBegin* block, BlockBegin* ublock);
  
+ #ifdef RISCV
+   LIR_Condition cond()        const              { return condition();  }
+   void set_cond(LIR_Condition cond)              { set_condition(cond); }
+ #else
    LIR_Condition cond()        const              { return _cond;        }
+   void set_cond(LIR_Condition cond)              { _cond = cond;        }
+ #endif
 +  BasicType     type()        const              { return _type;        }
    Label*        label()       const              { return _label;       }
    BlockBegin*   block()       const              { return _block;       }
    BlockBegin*   ublock()      const              { return _ublock;      }
-@@ -1817,7 +1820,7 @@
+@@ -1943,7 +1946,7 @@
    LIR_OpDelay(LIR_Op* op, CodeEmitInfo* info):
      LIR_Op(lir_delay_slot, LIR_OprFact::illegalOpr, info),
      _op(op) {
@@ -127,7 +149,7 @@ diff -ur a/src/hotspot/share/c1/c1_LIR.hpp b/src/hotspot/share/c1/c1_LIR.hpp
    }
    virtual void emit_code(LIR_Assembler* masm);
    virtual LIR_OpDelay* as_OpDelay() { return this; }
-@@ -2186,26 +2189,24 @@
+@@ -2333,26 +2336,24 @@
  
    // jump is an unconditional branch
    void jump(BlockBegin* block) {
@@ -169,7 +191,7 @@ diff -ur a/src/hotspot/share/c1/c1_LIR.hpp b/src/hotspot/share/c1/c1_LIR.hpp
 diff -ur a/src/hotspot/share/c1/c1_LIRGenerator.cpp b/src/hotspot/share/c1/c1_LIRGenerator.cpp
 --- a/src/hotspot/share/c1/c1_LIRGenerator.cpp	   :: 
 +++ b/src/hotspot/share/c1/c1_LIRGenerator.cpp	   :: 
-@@ -477,11 +477,11 @@
+@@ -478,11 +478,11 @@
    if (index->is_constant()) {
      cmp_mem_int(lir_cond_belowEqual, array, arrayOopDesc::length_offset_in_bytes(),
                  index->as_jint(), null_check_info);
@@ -183,7 +205,7 @@ diff -ur a/src/hotspot/share/c1/c1_LIRGenerator.cpp b/src/hotspot/share/c1/c1_LI
    }
  }
  
-@@ -490,11 +490,11 @@
+@@ -491,11 +491,11 @@
    CodeStub* stub = new RangeCheckStub(info, index);
    if (index->is_constant()) {
      cmp_mem_int(lir_cond_belowEqual, buffer, java_nio_Buffer::limit_offset(), index->as_jint(), info);
@@ -197,7 +219,7 @@ diff -ur a/src/hotspot/share/c1/c1_LIRGenerator.cpp b/src/hotspot/share/c1/c1_LI
    }
    __ move(index, result);
  }
-@@ -669,7 +669,7 @@
+@@ -670,7 +670,7 @@
                         oopDesc::header_size(), instance_size, klass_reg, !klass->is_initialized(), slow_path);
    } else {
      CodeStub* slow_path = new NewInstanceStub(klass_reg, dst, klass, info, Runtime1::new_instance_id);
@@ -206,7 +228,7 @@ diff -ur a/src/hotspot/share/c1/c1_LIRGenerator.cpp b/src/hotspot/share/c1/c1_LI
      __ branch_destination(slow_path->continuation());
    }
  }
-@@ -1361,7 +1361,7 @@
+@@ -1366,7 +1366,7 @@
    LabelObj* L_array = new LabelObj();
  
    __ cmp(lir_cond_lessEqual, layout, 0);
@@ -215,7 +237,7 @@ diff -ur a/src/hotspot/share/c1/c1_LIRGenerator.cpp b/src/hotspot/share/c1/c1_LI
  
    // Instance case: the layout helper gives us instance size almost directly,
    // but we need to mask out the _lh_instance_slow_path_bit.
-@@ -1371,7 +1371,7 @@
+@@ -1376,7 +1376,7 @@
    jlong mask = ~(jlong) right_n_bits(LogBytesPerLong);
    __ logical_and(result_reg, LIR_OprFact::longConst(mask), result_reg);
  
@@ -224,7 +246,7 @@ diff -ur a/src/hotspot/share/c1/c1_LIRGenerator.cpp b/src/hotspot/share/c1/c1_LI
  
    // Array case: size is round(header + element_size*arraylength).
    // Since arraylength is different for every array instance, we have to
-@@ -1415,7 +1415,7 @@
+@@ -1420,7 +1420,7 @@
  
    __ branch_destination(L_shift_loop->label());
    __ cmp(lir_cond_equal, layout, 0);
@@ -233,7 +255,7 @@ diff -ur a/src/hotspot/share/c1/c1_LIRGenerator.cpp b/src/hotspot/share/c1/c1_LI
  
  #ifdef _LP64
    __ shift_left(length, 1, length);
-@@ -1425,7 +1425,7 @@
+@@ -1430,7 +1430,7 @@
  
    __ sub(layout, LIR_OprFact::intConst(1), layout);
  
@@ -242,7 +264,7 @@ diff -ur a/src/hotspot/share/c1/c1_LIRGenerator.cpp b/src/hotspot/share/c1/c1_LI
    __ branch_destination(L_shift_exit->label());
  
    // Mix all up, round, and push to the result.
-@@ -1715,7 +1715,7 @@
+@@ -1720,7 +1720,7 @@
    if (GenerateRangeChecks && needs_range_check) {
      if (use_length) {
        __ cmp(lir_cond_belowEqual, length.result(), index.result());
@@ -251,7 +273,7 @@ diff -ur a/src/hotspot/share/c1/c1_LIRGenerator.cpp b/src/hotspot/share/c1/c1_LI
      } else {
        array_range_check(array.result(), index.result(), null_check_info, range_check_info);
        // range_check also does the null check
-@@ -1894,11 +1894,11 @@
+@@ -1899,11 +1899,11 @@
      CodeStub* stub = new RangeCheckStub(info, index.result());
      if (index.result()->is_constant()) {
        cmp_mem_int(lir_cond_belowEqual, buf.result(), java_nio_Buffer::limit_offset(), index.result()->as_jint(), info);
@@ -265,7 +287,7 @@ diff -ur a/src/hotspot/share/c1/c1_LIRGenerator.cpp b/src/hotspot/share/c1/c1_LI
      }
      __ move(index.result(), result);
    } else {
-@@ -1972,12 +1972,12 @@
+@@ -1977,12 +1977,12 @@
  
    if (GenerateRangeChecks && needs_range_check) {
      if (StressLoopInvariantCodeMotion && range_check_info->deoptimize_on_exception()) {
@@ -280,7 +302,7 @@ diff -ur a/src/hotspot/share/c1/c1_LIRGenerator.cpp b/src/hotspot/share/c1/c1_LI
      } else {
        array_range_check(array.result(), index.result(), null_check_info, range_check_info);
        // The range check performs the null check, so clear it out for the load
-@@ -2353,18 +2353,18 @@
+@@ -2358,18 +2358,18 @@
      BlockBegin* dest = one_range->sux();
      if (low_key == high_key) {
        __ cmp(lir_cond_equal, value, low_key);
@@ -304,7 +326,7 @@ diff -ur a/src/hotspot/share/c1/c1_LIRGenerator.cpp b/src/hotspot/share/c1/c1_LI
        __ branch_destination(L->label());
      }
    }
-@@ -2484,7 +2484,7 @@
+@@ -2489,7 +2489,7 @@
    } else {
      for (int i = 0; i < len; i++) {
        __ cmp(lir_cond_equal, value, i + lo_key);
@@ -313,7 +335,7 @@ diff -ur a/src/hotspot/share/c1/c1_LIRGenerator.cpp b/src/hotspot/share/c1/c1_LI
      }
      __ jump(x->default_sux());
    }
-@@ -2543,7 +2543,7 @@
+@@ -2548,7 +2548,7 @@
      int len = x->length();
      for (int i = 0; i < len; i++) {
        __ cmp(lir_cond_equal, value, x->key_at(i));
@@ -322,7 +344,7 @@ diff -ur a/src/hotspot/share/c1/c1_LIRGenerator.cpp b/src/hotspot/share/c1/c1_LI
      }
      __ jump(x->default_sux());
    }
-@@ -3047,18 +3047,16 @@
+@@ -3052,18 +3052,16 @@
  void LIRGenerator::do_getEventWriter(Intrinsic* x) {
    LabelObj* L_end = new LabelObj();
  
@@ -347,7 +369,7 @@ diff -ur a/src/hotspot/share/c1/c1_LIRGenerator.cpp b/src/hotspot/share/c1/c1_LI
    access_load(IN_NATIVE, T_OBJECT, LIR_OprFact::address(new LIR_Address(jobj, T_OBJECT)), result);
  
    __ branch_destination(L_end->label());
-@@ -3422,7 +3420,7 @@
+@@ -3427,7 +3425,7 @@
      CodeStub* deopt = new DeoptimizeStub(info, Deoptimization::Reason_tenured,
                                           Deoptimization::Action_make_not_entrant);
      __ cmp(lir_cond_lessEqual, result, LIR_OprFact::intConst(0));
@@ -356,7 +378,7 @@ diff -ur a/src/hotspot/share/c1/c1_LIRGenerator.cpp b/src/hotspot/share/c1/c1_LI
    }
  }
  
-@@ -3469,9 +3467,9 @@
+@@ -3474,9 +3472,9 @@
      if (freq == 0) {
        if (!step->is_constant()) {
          __ cmp(lir_cond_notEqual, step, LIR_OprFact::intConst(0));
@@ -368,7 +390,7 @@ diff -ur a/src/hotspot/share/c1/c1_LIRGenerator.cpp b/src/hotspot/share/c1/c1_LI
        }
      } else {
        LIR_Opr mask = load_immediate(freq, T_INT);
-@@ -3482,7 +3480,7 @@
+@@ -3487,7 +3485,7 @@
        }
        __ logical_and(result, mask, result);
        __ cmp(lir_cond_equal, result, LIR_OprFact::intConst(0));
@@ -377,7 +399,7 @@ diff -ur a/src/hotspot/share/c1/c1_LIRGenerator.cpp b/src/hotspot/share/c1/c1_LI
      }
      __ branch_destination(overflow->continuation());
    }
-@@ -3596,7 +3594,7 @@
+@@ -3601,7 +3599,7 @@
      CodeStub* stub = new PredicateFailedStub(info);
  
      __ cmp(lir_cond(cond), left, right);
@@ -389,7 +411,7 @@ diff -ur a/src/hotspot/share/c1/c1_LIRGenerator.cpp b/src/hotspot/share/c1/c1_LI
 diff -ur a/src/hotspot/share/c1/c1_LinearScan.cpp b/src/hotspot/share/c1/c1_LinearScan.cpp
 --- a/src/hotspot/share/c1/c1_LinearScan.cpp	   :: 
 +++ b/src/hotspot/share/c1/c1_LinearScan.cpp	   :: 
-@@ -2142,11 +2142,11 @@
+@@ -2155,11 +2155,11 @@
  #ifdef _LP64
          return LIR_OprFact::double_cpu(assigned_reg, assigned_reg);
  #else
@@ -403,7 +425,7 @@ diff -ur a/src/hotspot/share/c1/c1_LinearScan.cpp b/src/hotspot/share/c1/c1_Line
  #endif // LP64
        }
  
-@@ -2186,10 +2186,15 @@
+@@ -2199,10 +2199,15 @@
          }
  #endif // X86
  
@@ -420,7 +442,7 @@ diff -ur a/src/hotspot/share/c1/c1_LinearScan.cpp b/src/hotspot/share/c1/c1_Line
          LIR_Opr result = LIR_OprFact::double_fpu(assigned_reg - pd_first_fpu_reg, interval->assigned_regHi() - pd_first_fpu_reg);
  #else
          assert(assigned_reg >= pd_first_fpu_reg && assigned_reg <= pd_last_fpu_reg, "no fpu register");
-@@ -2786,6 +2791,9 @@
+@@ -2799,6 +2804,9 @@
  #ifdef AMD64
        assert(false, "FPU not used on x86-64");
  #endif
@@ -559,7 +581,7 @@ diff -ur a/src/hotspot/share/gc/shenandoah/c1/shenandoahBarrierSetC1.cpp b/src/h
 diff -ur a/src/hotspot/share/gc/z/c1/zBarrierSetC1.cpp b/src/hotspot/share/gc/z/c1/zBarrierSetC1.cpp
 --- a/src/hotspot/share/gc/z/c1/zBarrierSetC1.cpp	   :: 
 +++ b/src/hotspot/share/gc/z/c1/zBarrierSetC1.cpp	   :: 
-@@ -149,7 +149,7 @@
+@@ -153,7 +153,7 @@
    // Slow path
    const address runtime_stub = load_barrier_on_oop_field_preloaded_runtime_stub(access.decorators());
    CodeStub* const stub = new ZLoadBarrierStubC1(access, result, runtime_stub);
@@ -587,7 +609,7 @@ diff -ur a/src/hotspot/share/gc/z/c1/zBarrierSetC1.cpp b/src/hotspot/share/gc/z/
      case lir_unwind:
        unwind_op(op->in_opr());
        break;
-@@ -829,7 +839,11 @@
+@@ -844,7 +854,11 @@
          if (!r->is_stack()) {
            stringStream st;
            st.print("bad oop %s at %d", r->as_Register()->name(), _masm->offset());

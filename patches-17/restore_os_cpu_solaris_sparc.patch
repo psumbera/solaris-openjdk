@@ -271,7 +271,7 @@ diff -ur --new-file a/src/hotspot/os_cpu/solaris_sparc/orderAccess_solaris_sparc
 diff -ur --new-file a/src/hotspot/os_cpu/solaris_sparc/os_solaris_sparc.cpp b/src/hotspot/os_cpu/solaris_sparc/os_solaris_sparc.cpp
 --- a/src/hotspot/os_cpu/solaris_sparc/os_solaris_sparc.cpp	1970-01-01 01:00:00.000000000 +0000
 +++ b/src/hotspot/os_cpu/solaris_sparc/os_solaris_sparc.cpp	2023-04-16 12:14:52.819146703 +0000
-@@ -0,0 +1,547 @@
+@@ -0,0 +1,544 @@
 +/*
 + * Copyright (c) 1999, 2020, Oracle and/or its affiliates. All rights reserved.
 + * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -538,15 +538,6 @@ diff -ur --new-file a/src/hotspot/os_cpu/solaris_sparc/os_solaris_sparc.cpp b/sr
 +    assert(sig == info->si_signo, "bad siginfo");
 +  }
 +
-+  // Handle SafeFetch faults:
-+  if (uc != NULL) {
-+    address const pc = (address) uc->uc_mcontext.gregs[REG_PC];
-+    if (pc && StubRoutines::is_safefetch_fault(pc)) {
-+      os::Posix::ucontext_set_pc(uc, StubRoutines::continuation_for_safefetch_fault(pc));
-+      return 1;
-+    }
-+  }
-+
 +  // decide if this trap can be handled by a stub
 +  address stub = NULL;
 +
@@ -743,9 +734,15 @@ diff -ur --new-file a/src/hotspot/os_cpu/solaris_sparc/os_solaris_sparc.cpp b/sr
 +            uc->uc_mcontext.gregs[REG_nPC]);
 +  st->cr();
 +  st->cr();
++}
 +
-+  st->print_cr("Top of Stack: (sp=" INTPTR_FORMAT ")", (intptr_t)sp);
-+  print_hex_dump(st, (address)sp, (address)(sp + 32), sizeof(intptr_t));
++void os::print_tos_pc(outputStream *st, const void *context) {
++  if (context == NULL) return;
++
++  const ucontext_t* uc = (const ucontext_t*)context;
++
++  address sp = (address)os::Solaris::ucontext_get_sp(uc);
++  print_tos(st, sp);
 +  st->cr();
 +
 +  // Note: it may be unsafe to inspect memory near pc. For example, pc may
@@ -905,8 +902,8 @@ diff -ur --new-file a/src/hotspot/os_cpu/solaris_sparc/prefetch_solaris_sparc.in
 +
 +#include "runtime/prefetch.hpp"
 +
-+// For Sun Studio inplementation is in solaris_sparc.il
-+// For gcc inplementation is just below
++// For Sun Studio implementation is in solaris_sparc.il
++// For gcc implementation is just below
 +extern "C" void _Prefetch_read (void *loc, intx interval);
 +extern "C" void _Prefetch_write(void *loc, intx interval);
 +
@@ -1800,7 +1797,7 @@ diff -ur --new-file a/src/hotspot/os_cpu/solaris_sparc/vm_version_solaris_sparc.
 +
 +  uint32_t av = avs[AV_HW1_IDX];
 +
-+  // Obsolete and 32b legacy mode capabilites NOT probed here, despite being
++  // Obsolete and 32b legacy mode capabilities NOT probed here, despite being
 +  // set by Solaris 11.4 (onward) also on V9; AV_SPARC_MUL32, AV_SPARC_DIV32
 +  // and AV_SPARC_FSMULD (and AV_SPARC_V8PLUS).
 +

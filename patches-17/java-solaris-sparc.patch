@@ -26,7 +26,7 @@
  src/utils/IdealGraphVisualizer : hotspot/src/share/tools/IdealGraphVisualizer
 --- old/make/RunTestsPrebuilt.gmk	2020-05-20 17:58:24.212234589 -0700
 +++ new/make/RunTestsPrebuilt.gmk	2020-05-20 17:58:23.828227215 -0700
-@@ -163,8 +163,6 @@
+@@ -168,8 +168,6 @@
      OPENJDK_TARGET_OS := linux
    else ifeq ($(UNAME_OS), Darwin)
      OPENJDK_TARGET_OS := macosx
@@ -35,7 +35,7 @@
    else
      OPENJDK_TARGET_OS := $(UNAME_OS)
    endif
-@@ -174,38 +172,20 @@
+@@ -182,38 +180,20 @@
  # Assume little endian unless otherwise specified
  OPENJDK_TARGET_CPU_ENDIAN := little
  
@@ -82,7 +82,7 @@
  endif
  
  ifeq ($(OPENJDK_TARGET_OS), windows)
-@@ -225,11 +205,6 @@
+@@ -233,11 +213,6 @@
  else ifeq ($(OPENJDK_TARGET_OS), macosx)
    NUM_CORES := $(shell /usr/sbin/sysctl -n hw.ncpu)
    MEMORY_SIZE := $(shell $(EXPR) `/usr/sbin/sysctl -n hw.memsize` / 1024 / 1024)
@@ -96,7 +96,7 @@
    MEMORY_SIZE := $(shell \
 --- old/make/RunTestsPrebuiltSpec.gmk	2020-05-20 17:58:25.304255556 -0700
 +++ new/make/RunTestsPrebuiltSpec.gmk	2020-05-20 17:58:24.916248106 -0700
-@@ -172,16 +172,6 @@
+@@ -174,16 +174,6 @@
  HG := hg
  ULIMIT := ulimit
  
@@ -182,7 +182,7 @@
    elif test -x /usr/sbin/sysctl; then
 --- old/make/autoconf/flags-cflags.m4	2020-05-20 17:58:30.492355171 -0700
 +++ new/make/autoconf/flags-cflags.m4	2020-05-20 17:58:30.108347798 -0700
-@@ -413,9 +413,6 @@
+@@ -415,9 +415,6 @@
    if test "x$OPENJDK_TARGET_OS" = xlinux; then
      CFLAGS_OS_DEF_JVM="-DLINUX"
      CFLAGS_OS_DEF_JDK="-D_GNU_SOURCE -D_REENTRANT -D_LARGEFILE64_SOURCE"
@@ -257,7 +257,7 @@
              fi
 --- old/make/autoconf/libraries.m4	2020-05-20 17:58:41.188560546 -0700
 +++ new/make/autoconf/libraries.m4	2020-05-20 17:58:40.768552482 -0700
-@@ -121,15 +114,13 @@
+@@ -114,15 +114,13 @@
    BASIC_JVM_LIBS="$LIBM"
  
    # Dynamic loading library
@@ -274,7 +274,7 @@
    fi
  
    # librt for legacy clock_gettime
-@@ -160,12 +151,6 @@
+@@ -153,12 +151,6 @@
      BASIC_JVM_LIBS="$BASIC_JVM_LIBS -lperfstat"
    fi
  
@@ -287,7 +287,7 @@
    if test "x$OPENJDK_TARGET_OS" = xwindows; then
      BASIC_JVM_LIBS="$BASIC_JVM_LIBS kernel32.lib user32.lib gdi32.lib winspool.lib \
          comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib powrprof.lib uuid.lib \
-@@ -183,7 +168,6 @@
+@@ -176,7 +168,6 @@
    AC_SUBST(JVM_LIBS)
    AC_SUBST(OPENJDK_BUILD_JDKLIB_LIBS)
    AC_SUBST(OPENJDK_BUILD_JVM_LIBS)
@@ -328,7 +328,7 @@
    # Setup OPENJDK_$1_CPU_OSARCH, which is used to set the os.arch Java system property
    OPENJDK_$1_CPU_OSARCH="$OPENJDK_$1_CPU"
    if test "x$OPENJDK_$1_OS" = xlinux && test "x$OPENJDK_$1_CPU" = xx86; then
-@@ -608,9 +593,6 @@
+@@ -610,9 +595,6 @@
  
  AC_DEFUN([PLATFORM_SET_RELEASE_FILE_OS_VALUES],
  [
@@ -338,7 +338,7 @@
    if test "x$OPENJDK_TARGET_OS" = "xlinux"; then
      RELEASE_FILE_OS_NAME=Linux
    fi
-@@ -667,25 +649,9 @@
+@@ -669,25 +651,9 @@
    PLATFORM_SET_MODULE_TARGET_OS_VALUES
    PLATFORM_SET_RELEASE_FILE_OS_VALUES
    PLATFORM_SETUP_LEGACY_VARS
@@ -384,7 +384,7 @@
  
  # LDFLAGS used to link the jdk native launchers (C-code)
  LDFLAGS_JDKEXE:=@LDFLAGS_JDKEXE@
-@@ -753,7 +751,6 @@
+@@ -756,7 +754,6 @@
  LDD:=@LDD@
  OTOOL:=@OTOOL@
  READELF:=@READELF@
@@ -876,7 +876,7 @@
       HARFBUZZ_CFLAGS += -DHAVE_INTEL_ATOMIC_PRIMITIVES -DHB_NO_VISIBILITY
     endif
  
-@@ -610,10 +608,7 @@
+@@ -618,10 +616,7 @@
    ifeq ($(call isTargetOs, macosx), true)
      JAWT_LIBS := -lawt_lwawt
    else
@@ -888,7 +888,7 @@
      ifeq ($(ENABLE_HEADLESS_ONLY), false)
        JAWT_LIBS += -lawt_xawt
      else
-@@ -640,7 +635,6 @@
+@@ -648,7 +643,6 @@
        LDFLAGS_unix := -L$(INSTALL_LIBRARIES_HERE), \
        LDFLAGS_macosx := -Wl$(COMMA)-rpath$(COMMA)@loader_path, \
        LIBS_unix := $(JAWT_LIBS) $(JDKLIB_LIBS), \
@@ -1003,16 +1003,6 @@
      LIBS_aix := -lperfstat,\
      LIBS_windows := jvm.lib psapi.lib $(WIN_JAVA_LIB) advapi32.lib, \
  ))
---- old/make/modules/jdk.net/Lib.gmk	2020-05-20 17:59:25.877418605 -0700
-+++ new/make/modules/jdk.net/Lib.gmk	2020-05-20 17:59:25.493411232 -0700
-@@ -36,7 +36,6 @@
-       LDFLAGS := $(LDFLAGS_JDKLIB) \
-           $(call SET_SHARED_LIBRARY_ORIGIN), \
-       LIBS := -ljava, \
--      LIBS_solaris := -lsocket, \
-       LIBS_linux := -ljvm, \
-   ))
- 
 --- old/make/modules/jdk.sctp/Lib.gmk	2020-05-20 17:59:26.921438651 -0700
 +++ new/make/modules/jdk.sctp/Lib.gmk	2020-05-20 17:59:26.541431354 -0700
 @@ -44,7 +44,6 @@
@@ -1156,7 +1146,7 @@
  set -e
 --- old/make/test/JtregNativeHotspot.gmk	2020-05-20 17:59:33.301561154 -0700
 +++ new/make/test/JtregNativeHotspot.gmk	2020-05-20 17:59:32.909553627 -0700
-@@ -869,10 +869,6 @@
+@@ -871,10 +871,6 @@
  
  BUILD_HOTSPOT_JTREG_EXECUTABLES_LIBS_exesigtest := -ljvm
  
@@ -1169,7 +1159,7 @@
      BUILD_HOTSPOT_JTREG_EXCLUDE += exesigtest.c libterminatedThread.c libTestJNI.c libnativeStack.c
 --- old/make/test/JtregNativeJdk.gmk	2020-05-20 17:59:34.437582966 -0700
 +++ new/make/test/JtregNativeJdk.gmk	2020-05-20 17:59:34.045575440 -0700
-@@ -73,9 +73,6 @@
+@@ -75,9 +75,6 @@
    ifeq ($(call isTargetOs, linux), true)
      BUILD_JDK_JTREG_LIBRARIES_LIBS_libInheritedChannel := -ljava
      BUILD_JDK_JTREG_EXECUTABLES_LIBS_exelauncher := -ldl
@@ -1278,7 +1268,7 @@
  #ifdef __APPLE__
 --- old/src/hotspot/os/posix/os_posix.hpp	2020-05-20 17:59:44.033767220 -0700
 +++ new/src/hotspot/os/posix/os_posix.hpp	2020-05-20 17:59:43.649759847 -0700
-@@ -125,8 +125,6 @@
+@@ -134,8 +134,6 @@
    sigjmp_buf _jmpbuf;
  };
  
@@ -1287,7 +1277,7 @@
  /*
   * This is the platform-specific implementation underpinning
   * the ParkEvent class, which itself underpins Java-level monitor
-@@ -292,6 +290,4 @@
+@@ -301,6 +299,4 @@
    void notify_all();
  };
  
@@ -1325,7 +1315,7 @@
  #endif
 --- old/src/hotspot/share/c1/c1_LIR.cpp	2020-05-20 17:59:59.318060690 -0700
 +++ new/src/hotspot/share/c1/c1_LIR.cpp	2020-05-20 17:59:58.926053163 -0700
-@@ -452,8 +452,6 @@
+@@ -467,8 +467,6 @@
      case lir_monaddr:        // input and result always valid, info always invalid
      case lir_null_check:     // input and info always valid, result always invalid
      case lir_move:           // input and result always valid, may have info
@@ -1334,7 +1324,7 @@
      {
        assert(op->as_Op1() != NULL, "must be");
        LIR_Op1* op1 = (LIR_Op1*)op;
-@@ -1664,8 +1662,6 @@
+@@ -1763,8 +1761,6 @@
       case lir_convert:               s = "convert";       break;
       case lir_alloc_object:          s = "alloc_obj";     break;
       case lir_monaddr:               s = "mon_addr";      break;
@@ -1345,16 +1335,16 @@
       case lir_cmp_l2i:               s = "cmp_l2i";       break;
 --- old/src/hotspot/share/c1/c1_LIR.hpp	2020-05-20 18:00:00.446082348 -0700
 +++ new/src/hotspot/share/c1/c1_LIR.hpp	2020-05-20 18:00:00.042074591 -0700
-@@ -921,8 +921,6 @@
+@@ -927,8 +927,6 @@
        , lir_monaddr
        , lir_roundfp
        , lir_safepoint
 -      , lir_pack64
 -      , lir_unpack64
        , lir_unwind
+       , lir_load_klass
    , end_op1
-   , begin_op2
-@@ -2114,9 +2112,6 @@
+@@ -2254,9 +2252,6 @@
    void logical_or  (LIR_Opr left, LIR_Opr right, LIR_Opr dst) { append(new LIR_Op2(lir_logic_or,   left, right, dst)); }
    void logical_xor (LIR_Opr left, LIR_Opr right, LIR_Opr dst) { append(new LIR_Op2(lir_logic_xor,  left, right, dst)); }
  
@@ -1387,7 +1377,7 @@
  
 --- old/src/hotspot/share/runtime/globals.hpp	2020-05-20 18:00:31.194672744 -0700
 +++ new/src/hotspot/share/runtime/globals.hpp	2020-05-20 18:00:30.854666216 -0700
-@@ -689,10 +689,6 @@
+@@ -693,10 +693,6 @@
    product_pd(bool, DontYieldALot,                                           \
            "Throw away obvious excess yield calls")                          \
                                                                              \
@@ -1398,7 +1388,7 @@
    product(bool, DisablePrimordialThreadGuardPages, false, EXPERIMENTAL,     \
                 "Disable the use of stack guard pages if the JVM is loaded " \
                 "on the primordial process thread")                          \
-@@ -742,10 +738,6 @@
+@@ -746,10 +742,6 @@
            "When true prevents OS-level spurious, or premature, wakeups "    \
            "from Object.wait (Ignored for Windows)")                         \
                                                                              \
@@ -1409,7 +1399,7 @@
    product(bool, ReduceSignalUsage, false,                                   \
            "Reduce the use of OS signals in Java and/or the VM")             \
                                                                              \
-@@ -1672,10 +1664,8 @@
+@@ -1673,10 +1665,8 @@
    product(intx, ThreadPriorityPolicy, 0,                                    \
            "0 : Normal.                                                     "\
            "    VM chooses priorities that are appropriate for normal       "\
@@ -1422,7 +1412,7 @@
            "    priorities. However, with ThreadPriorityPolicy=0, VM will   "\
            "    not use the highest possible native priority,               "\
            "    THREAD_PRIORITY_TIME_CRITICAL, as it may interfere with     "\
-@@ -2024,8 +2014,7 @@
+@@ -2025,8 +2015,7 @@
             "do not map the archive")                                        \
             range(0, 2)                                                      \
                                                                              \
@@ -1449,7 +1439,7 @@
    if (PrintFlagsFinal || PrintFlagsRanges) {
 --- old/src/hotspot/share/runtime/os.hpp	2020-05-20 18:00:34.390734111 -0700
 +++ new/src/hotspot/share/runtime/os.hpp	2020-05-20 18:00:34.014726891 -0700
-@@ -484,7 +484,7 @@
+@@ -493,7 +493,7 @@
  
    static void free_thread(OSThread* osthread);
  
@@ -1458,7 +1448,7 @@
    static intx current_thread_id();
    static int current_process_id();
  
-@@ -831,10 +831,8 @@
+@@ -842,10 +842,8 @@
    // JVMTI & JVM monitoring and management support
    // The thread_cpu_time() and current_thread_cpu_time() are only
    // supported if is_thread_cpu_time_supported() returns true.
@@ -1482,7 +1472,7 @@
  # include "semaphore_bsd.hpp"
 --- old/src/hotspot/share/runtime/thread.cpp	2020-05-20 18:00:37.538794556 -0700
 +++ new/src/hotspot/share/runtime/thread.cpp	2020-05-20 18:00:37.202788104 -0700
-@@ -347,12 +347,6 @@
+@@ -348,12 +348,6 @@
    set_stack_base(os::current_stack_base());
    set_stack_size(os::current_stack_size());
  
@@ -1512,7 +1502,7 @@
  
 --- old/src/hotspot/share/services/memTracker.hpp	2020-05-20 18:00:39.774837489 -0700
 +++ new/src/hotspot/share/services/memTracker.hpp	2020-05-20 18:00:39.374829809 -0700
-@@ -87,11 +87,9 @@
+@@ -89,11 +89,9 @@
  #include "services/threadStackTracker.hpp"
  #include "services/virtualMemoryTracker.hpp"
  
@@ -1520,15 +1510,15 @@
 -
 -#define CURRENT_PC ((MemTracker::tracking_level() == NMT_detail && NMT_stack_walkable) ? \
 +#define CURRENT_PC ((MemTracker::tracking_level() == NMT_detail) ? \
-                     NativeCallStack(0) : NativeCallStack::empty_stack())
+                     NativeCallStack(0) : FAKE_CALLSTACK)
 -#define CALLER_PC  ((MemTracker::tracking_level() == NMT_detail && NMT_stack_walkable) ?  \
 +#define CALLER_PC  ((MemTracker::tracking_level() == NMT_detail) ?  \
-                     NativeCallStack(1) : NativeCallStack::empty_stack())
+                     NativeCallStack(1) : FAKE_CALLSTACK)
  
  class MemBaseline;
 --- old/src/hotspot/share/utilities/debug.cpp	2020-05-20 18:00:41.782876045 -0700
 +++ new/src/hotspot/share/utilities/debug.cpp	2020-05-20 18:00:41.442869517 -0700
-@@ -637,12 +637,11 @@
+@@ -641,12 +641,11 @@
    tty->print_cr("  findm(intptr_t pc) - finds Method*");
    tty->print_cr("  find(intptr_t x)   - finds & prints nmethod/stub/bytecode/oop based on pointer into it");
    tty->print_cr("  pns(void* sp, void* fp, void* pc)  - print native (i.e. mixed) stack trace. E.g.");
@@ -1629,7 +1619,7 @@
 -// warnings.
 -//
 -// This also means that pointers to functions can no longer be "hidden"
--// in opaque types like void * because at the invokation point warnings
+-// in opaque types like void * because at the invocation point warnings
 -// will be generated. While this makes perfect sense from a type safety
 -// point of view it causes a lot of warnings on old code using C header
 -// files. Here are some typedefs to make the job of silencing warnings
@@ -1700,16 +1690,7 @@
  #include <netinet/in.h>
 --- old/src/hotspot/share/utilities/vmError.cpp	2020-05-20 18:00:48.214999546 -0700
 +++ new/src/hotspot/share/utilities/vmError.cpp	2020-05-20 18:00:47.822992019 -0700
-@@ -95,7 +95,7 @@
-   "JAVA_HOME", "JAVA_TOOL_OPTIONS", "_JAVA_OPTIONS", "CLASSPATH",
-   "PATH", "USERNAME",
- 
--  // Env variables that are defined on Solaris/Linux/BSD
-+  // Env variables that are defined on Linux/BSD
-   "LD_LIBRARY_PATH", "LD_PRELOAD", "SHELL", "DISPLAY",
-   "HOSTTYPE", "OSTYPE", "ARCH", "MACHTYPE",
-   "LANG", "LC_ALL", "LC_CTYPE", "LC_NUMERIC", "LC_TIME",
-@@ -1627,8 +1627,6 @@
+@@ -1791,8 +1791,6 @@
        out.print_raw   ("#   Executing ");
  #if defined(LINUX) || defined(_ALLBSD_SOURCE)
        out.print_raw   ("/bin/sh -c ");
@@ -1718,7 +1699,7 @@
  #elif defined(_WINDOWS)
        out.print_raw   ("cmd /C ");
  #endif
-@@ -1690,8 +1688,6 @@
+@@ -1854,8 +1852,6 @@
      tty->print("#   Executing ");
  #if defined(LINUX)
      tty->print  ("/bin/sh -c ");
@@ -1773,21 +1754,13 @@
     identifiers matching a C constant. The PREFIX_ is filtered out in the
 --- old/src/java.base/share/conf/security/java.security	2020-05-20 18:00:54.519120590 -0700
 +++ new/src/java.base/share/conf/security/java.security	2020-05-20 18:00:54.183114138 -0700
-@@ -63,9 +63,6 @@
- #
- # List of providers and their preference orders (see above):
- #
--#ifdef solaris
--security.provider.tbd=SunPKCS11 ${java.home}/conf/security/sunpkcs11-solaris.cfg
--#endif
- security.provider.tbd=SUN
- security.provider.tbd=SunRsaSign
- security.provider.tbd=SunEC
-@@ -83,9 +80,7 @@
+@@ -80,11 +80,7 @@
  #ifdef macosx
  security.provider.tbd=Apple
  #endif
--#ifndef solaris
+-#ifdef solaris
+-security.provider.tbd=SunPKCS11 ${java.home}/conf/security/sunpkcs11-solaris.cfg
+-#else
  security.provider.tbd=SunPKCS11
 -#endif
  
@@ -2157,7 +2130,7 @@
  static pid_t
  vforkChild(ChildStuff *c) {
      volatile pid_t resultPid;
-@@ -585,7 +576,7 @@
+@@ -606,7 +599,7 @@
  startChild(JNIEnv *env, jobject process, ChildStuff *c, const char *helperpath) {
      switch (c->mode) {
  /* vfork(2) is deprecated on Darwin*/
@@ -3745,7 +3718,7 @@
  #ifdef _AIX
      if (level == SOL_SOCKET) {
          if (opt == SO_SNDBUF || opt == SO_RCVBUF) {
-@@ -908,19 +675,10 @@
+@@ -910,19 +677,10 @@
   *
   * Linux allows a socket to bind to 127.0.0.255 which must be
   * caught.
@@ -3765,7 +3738,7 @@
      int rv;
      int arg, alen;
  
-@@ -938,61 +696,8 @@
+@@ -940,61 +698,8 @@
      }
  #endif
  
@@ -4018,8 +3991,8 @@
 -
  #ifdef __linux__
  #include <sys/syscall.h>
- #endif
-@@ -267,8 +260,7 @@
+ #include <sys/sysmacros.h> // makedev macros
+@@ -389,8 +382,7 @@
  
      /* system calls that might not be available at run time */
  
@@ -4679,7 +4652,7 @@
      static boolean isLinux() {
          return (osname.equals("Linux"));
      }
-@@ -303,7 +299,7 @@
+@@ -307,7 +303,7 @@
                  }
              }
          } else {
@@ -4688,7 +4661,7 @@
                  printers = getAllPrinterNamesSysV();
              } else if (isAIX()) {
                  printers = getAllPrinterNamesAIX();
-@@ -487,7 +483,7 @@
+@@ -491,7 +487,7 @@
          }
          /* fallback if nothing not having a printer at this point */
          PrintService printer = null;
@@ -4697,7 +4670,7 @@
              printer = getNamedPrinterNameSysV(name);
          } else if (isAIX()) {
              printer = getNamedPrinterNameAIX(name);
-@@ -658,7 +654,7 @@
+@@ -662,7 +658,7 @@
                  psuri = printerInfo[1];
              }
          } else {
@@ -4706,7 +4679,7 @@
                  defaultPrinter = getDefaultPrinterNameSysV();
              } else if (isAIX()) {
                  defaultPrinter = getDefaultPrinterNameAIX();
-@@ -878,7 +874,7 @@
+@@ -882,7 +878,7 @@
          ArrayList<String> results = null;
          try {
              final String[] cmd = new String[3];
@@ -5088,7 +5061,7 @@
                                      "libgssapi_krb5.so",
 --- old/src/java.security.jgss/share/classes/sun/security/krb5/Config.java	2020-05-20 18:02:50.089339623 -0700
 +++ new/src/java.security.jgss/share/classes/sun/security/krb5/Config.java	2020-05-20 18:02:49.705332249 -0700
-@@ -927,8 +927,6 @@
+@@ -933,8 +933,6 @@
              if (name == null) {
                  name = "c:\\winnt\\krb5.ini";
              }
@@ -5211,7 +5184,7 @@
  
 --- old/src/jdk.hotspot.agent/share/classes/sun/jvm/hotspot/HotSpotAgent.java	2020-05-20 18:03:09.173706056 -0700
 +++ new/src/jdk.hotspot.agent/share/classes/sun/jvm/hotspot/HotSpotAgent.java	2020-05-20 18:03:08.789698683 -0700
-@@ -40,7 +40,6 @@
+@@ -41,7 +41,6 @@
  import sun.jvm.hotspot.debugger.NoSuchSymbolException;
  import sun.jvm.hotspot.debugger.bsd.BsdDebuggerLocal;
  import sun.jvm.hotspot.debugger.linux.LinuxDebuggerLocal;
@@ -5219,7 +5192,7 @@
  import sun.jvm.hotspot.debugger.remote.RemoteDebugger;
  import sun.jvm.hotspot.debugger.remote.RemoteDebuggerClient;
  import sun.jvm.hotspot.debugger.remote.RemoteDebuggerServer;
-@@ -364,9 +361,7 @@
+@@ -363,9 +362,7 @@
                  } catch (UnsupportedPlatformException e) {
                     throw new DebuggerException(e);
                  }
@@ -5230,7 +5203,7 @@
                      setupDebuggerWin32();
                  } else if (os.equals("linux")) {
                      setupDebuggerLinux();
-@@ -418,11 +413,7 @@
+@@ -417,11 +414,7 @@
          // configure the VM.
  
          try {
@@ -5243,7 +5216,7 @@
                  db = new HotSpotTypeDataBase(machDesc,
                  new Win32VtblAccess(debugger, jvmLibNames),
                  debugger, jvmLibNames);
-@@ -507,29 +498,6 @@
+@@ -506,29 +499,6 @@
          System.err.println("Loaded alternate HotSpot SA Debugger: " + alternateName);
      }
  
@@ -5273,7 +5246,7 @@
      private void connectRemoteDebugger() throws DebuggerException {
          RemoteDebugger remote =
          (RemoteDebugger) RMIHelper.lookup(debugServerID);
-@@ -545,9 +509,7 @@
+@@ -540,9 +510,7 @@
      }
  
      private void setupJVMLibNames(String os) {
@@ -5284,7 +5257,7 @@
              setupJVMLibNamesWin32();
          } else if (os.equals("linux")) {
              setupJVMLibNamesLinux();
-@@ -570,10 +522,6 @@
+@@ -555,10 +523,6 @@
          }
      }
  
@@ -5306,7 +5279,7 @@
  import sun.jvm.hotspot.runtime.win32_x86.Win32X86JavaThreadPDAccess;
  import sun.jvm.hotspot.runtime.win32_amd64.Win32AMD64JavaThreadPDAccess;
  import sun.jvm.hotspot.runtime.win32_aarch64.Win32AARCH64JavaThreadPDAccess;
-@@ -100,13 +96,7 @@
+@@ -99,13 +97,7 @@
  
          access = null;
          // FIXME: find the platform specific PD class by reflection?
@@ -5663,7 +5636,7 @@
  extern sctp_getpaddrs_func* nio_sctp_getpaddrs;
 --- old/src/jdk.sctp/unix/native/libsctp/SctpChannelImpl.c	2020-05-20 18:03:40.558308663 -0700
 +++ new/src/jdk.sctp/unix/native/libsctp/SctpChannelImpl.c	2020-05-20 18:03:40.174301290 -0700
-@@ -334,10 +334,11 @@
+@@ -331,10 +331,11 @@
              break;
          case SCTP_ADDR_MADE_PRIM :
              event = sun_nio_ch_sctp_PeerAddrChange_SCTP_ADDR_MADE_PRIM;
@@ -5678,7 +5651,7 @@
  
 --- old/src/jdk.sctp/unix/native/libsctp/SctpNet.c	2020-05-20 18:03:41.630329248 -0700
 +++ new/src/jdk.sctp/unix/native/libsctp/SctpNet.c	2020-05-20 18:03:41.242321797 -0700
-@@ -364,11 +364,7 @@
+@@ -371,11 +371,7 @@
      int i, addrCount;
      jobjectArray isaa;
  
@@ -5687,10 +5660,10 @@
 -#else /* __linux__ */
      if ((addrCount = nio_sctp_getladdrs(fd, 0, (struct sockaddr **)&addr_buf)) == -1) {
 -#endif
-         handleSocketError(env, errno);
+         sctpHandleSocketError(env, errno);
          return NULL;
      }
-@@ -413,11 +409,7 @@
+@@ -420,11 +416,7 @@
      int i, addrCount;
      jobjectArray isaa;
  
@@ -5699,7 +5672,7 @@
 -#else /* __linux__ */
      if ((addrCount = nio_sctp_getpaddrs(fd, id, (struct sockaddr **)&addr_buf)) == -1) {
 -#endif
-         handleSocketError(env, errno);
+         sctpHandleSocketError(env, errno);
          return NULL;
      }
 --- old/src/jdk.security.auth/share/classes/com/sun/security/auth/module/Krb5LoginModule.java	2020-05-20 18:03:42.730350368 -0700
@@ -9902,7 +9875,7 @@
 -    path = &info->dls_serpath[0];
 -
 -    // Note: Due to a legacy implementation, most of the library path
--    // is set in the launcher. This was to accomodate linking restrictions
+-    // is set in the launcher. This was to accommodate linking restrictions
 -    // on legacy Solaris implementations (which are no longer supported).
 -    // Eventually, all the library path setting will be done here.
 -    //
@@ -10229,11 +10202,11 @@
 -
 -  char buf[64];
 -  if (status == 0) {
--    log_info(os, thread)("Thread started (tid: " UINTX_FORMAT ", attributes: %s). ",
--      (uintx) tid, describe_thr_create_attributes(buf, sizeof(buf), stack_size, flags));
+-    log_info(os, thread)("Thread \"%s\" started (tid: " UINTX_FORMAT ", attributes: %s). ",
+-      thread->name(), (uintx) tid, describe_thr_create_attributes(buf, sizeof(buf), stack_size, flags));
 -  } else {
--    log_warning(os, thread)("Failed to start thread - thr_create failed (%s) for attributes: %s.",
--      os::errno_name(status), describe_thr_create_attributes(buf, sizeof(buf), stack_size, flags));
+-    log_warning(os, thread)("Failed to start thread \"%s\" - thr_create failed (%s) for attributes: %s.",
+-      thread->name(), os::errno_name(status), describe_thr_create_attributes(buf, sizeof(buf), stack_size, flags));
 -    // Log some OS information which might explain why creating the thread failed.
 -    log_info(os, thread)("Number of threads approx. running in the VM: %d", Threads::number_of_threads());
 -    LogStream st(Log(os, thread)::info());
@@ -11550,7 +11523,7 @@
 -    if (_illumos_page_sizes[beg] <= size_limit) {
 -      _page_sizes.add(_illumos_page_sizes[beg]);
 -      if (_illumos_page_sizes[beg] > *page_size) {
--	*page_size = _illumos_page_sizes[beg];
+-        *page_size = _illumos_page_sizes[beg];
 -      }
 -    }
 -  }
@@ -11651,11 +11624,11 @@
 -// meaningless in this mode so we must adjust the real lwp's priority.
 -// The routines below implement the getting and setting of lwp priorities.
 -//
--// Note: There are three priority scales used on Solaris.  Java priotities
+-// Note: There are three priority scales used on Solaris.  Java priorities
 -//       which range from 1 to 10, libthread "thr_setprio" scale which range
 -//       from 0 to 127, and the current scheduling class of the process we
 -//       are running in.  This is typically from -60 to +60.
--//       The setting of the lwp priorities in done after a call to thr_setprio
+-//       The setting of the lwp priorities is done after a call to thr_setprio
 -//       so Java priorities are mapped to libthread priorities and we map from
 -//       the latter to lwp priorities.  We don't keep priorities stored in
 -//       Java priorities since some of our worker threads want to set priorities
@@ -13829,7 +13802,7 @@
 -#endif // OS_SOLARIS_OS_SOLARIS_HPP
 --- old/src/hotspot/os/solaris/os_solaris.inline.hpp	2020-05-20 18:09:36.197137133 -0700
 +++ /dev/null	2020-03-09 18:57:19.455001459 -0700
-@@ -1,63 +0,0 @@
+@@ -1,67 +0,0 @@
 -/*
 - * Copyright (c) 1997, 2019, Oracle and/or its affiliates. All rights reserved.
 - * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
@@ -13885,6 +13858,10 @@
 -// Bang the shadow pages if they need to be touched to be mapped.
 -inline void os::map_stack_shadow_pages(address sp) {
 -}
+-
+-// Trim-native support, stubbed out for now, may be enabled later
+-inline bool os::can_trim_native_heap() { return false; }
+-inline bool os::trim_native_heap(os::size_change_t* rss_change) { return false; }
 -
 -//////////////////////////////////////////////////////////////////////////////
 -////////////////////////////////////////////////////////////////////////////////
@@ -15035,11 +15012,6 @@
 -    // factor me: getPCfromContext
 -    pc = (address) uc->uc_mcontext.gregs[REG_PC];
 -
--    if (StubRoutines::is_safefetch_fault(pc)) {
--      os::Posix::ucontext_set_pc(uc, StubRoutines::continuation_for_safefetch_fault(pc));
--      return true;
--    }
--
 -    // Handle ALL stack overflow variations here
 -    if (sig == SIGSEGV && info->si_code == SEGV_ACCERR) {
 -      address addr = (address) info->si_addr;
@@ -15343,10 +15315,15 @@
 -#endif // AMD64
 -  st->cr();
 -  st->cr();
+-}
 -
--  intptr_t *sp = (intptr_t *)os::Solaris::ucontext_get_sp(uc);
--  st->print_cr("Top of Stack: (sp=" INTPTR_FORMAT ")", (intptr_t)sp);
--  print_hex_dump(st, (address)sp, (address)(sp + 8*sizeof(intptr_t)), sizeof(intptr_t));
+-void os::print_tos_pc(outputStream *st, const void *context) {
+-  if (context == NULL) return;
+-
+-  const ucontext_t* uc = (const ucontext_t*)context;
+-
+-  address sp = (address)os::Solaris::ucontext_get_sp(uc);
+-  print_tos(st, sp);
 -  st->cr();
 -
 -  // Note: it may be unsafe to inspect memory near pc. For example, pc may

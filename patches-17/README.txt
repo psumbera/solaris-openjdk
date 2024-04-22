@@ -6,6 +6,51 @@ See also README-zero.txt for patches to build a project zero variant.
 Most patches -p0
 
 JDK17:
+
+17.0.11
+
+Needed to restore src/hotspot/share/services/dtraceAttacher.hpp
+Copied illumos-port-17.patch from the original fix in jdk 19+11,
+here as illumos-port-19.patch
+This file should have been removed in the original solaris
+deprecation along with the corresponding cpp file, but was forgotten
+about, and has recently been cleaned up. As we still #include it, we
+need to put it back. As we disable DTrace in any case, it would be
+cleaner to simply remove all of it.
+
+
+Cleanup: Restore the necessary parts of sparc into the main patch, to
+ease future maintenance.
+
+Cleanup: missed the dropping of TIERED in 17+8, it's now
+COMPILER1_AND_COMPILER2
+
+17.0.10
+
+Drop the make/modules/jdk.net/Lib.gmk patch, as it's guarded in such a
+way as will never be used on solaris.
+
+Need to add illumos-port-18.patch (derived from jdk21's
+illumos-port-24.patch) so that test/jdk/java/io/File/libGetXSpace.c
+will compile.
+
+17.0.9
+
+Much rework around safefetch. Removed illumos-port-12.patch, and
+removed the is_safefetch_fault() block entirely. (Looked at the
+Windows port, and that block was removed there in this release. It
+wasn't present at all in other platforms.) Copied the new assembler
+src/hotspot/os_cpu/linux_x86/safefetch_linux_x86_64.S to
+src/hotspot/os_cpu/solaris_x86/safefetch_solaris_x86_64.S, see
+illumos-port-17.patch
+
+In os_solaris_x86.cpp, the end of print_context() is now split off
+into print_tos_pc()
+
+We need an implementation of os::can_trim_native_heap() and
+trim_native_heap(); simply add a stub in os_solaris.inline.hpp to
+return false like pretty much every other platform except linux does.
+
 17.0.8
 
 Reinstate make/data/charsetmapping/stdcs-solaris, removal broke the

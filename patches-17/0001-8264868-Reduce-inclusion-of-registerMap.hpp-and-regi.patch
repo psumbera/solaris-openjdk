@@ -240,7 +240,7 @@ diff --git a/src/hotspot/share/runtime/frame.cpp b/src/hotspot/share/runtime/fra
 index cc7cb1d0235..b97ae72c2c9 100644
 --- a/src/hotspot/share/runtime/frame.cpp
 +++ b/src/hotspot/share/runtime/frame.cpp
-@@ -1239,17 +1239,6 @@ void frame::describe(FrameValues& values, int frame_no) {
+@@ -1248,17 +1248,6 @@ void frame::describe(FrameValues& values, int frame_no) {
  
  #endif
  
@@ -281,7 +281,7 @@ index c3040b65f1f..3d03802d2ea 100644
  
  enum class DerivedPointerIterationMode {
    _with_table,
-@@ -457,40 +458,5 @@ class FrameValues {
+@@ -459,40 +460,5 @@ class FrameValues {
  
  #endif
  
@@ -637,12 +637,12 @@ index 31b78ee97ff..d2d2af60c12 100644
 +++ b/src/hotspot/share/utilities/vmError.cpp
 @@ -47,6 +47,7 @@
  #include "runtime/osThread.hpp"
- #include "runtime/safefetch.inline.hpp"
+ #include "runtime/safefetch.hpp"
  #include "runtime/safepointMechanism.hpp"
 +#include "runtime/stackFrameStream.inline.hpp"
  #include "runtime/thread.inline.hpp"
  #include "runtime/threadSMR.hpp"
- #include "runtime/vmThread.hpp"
+ #include "runtime/trimNativeHeap.hpp"
 -- 
 2.43.2
 

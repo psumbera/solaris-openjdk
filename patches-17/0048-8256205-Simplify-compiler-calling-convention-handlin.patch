@@ -132,7 +132,7 @@ index 92a07a84d2a..e13ef62593b 100644
  
    // Create the mapping between argument positions and
    // registers.
-@@ -2551,6 +2550,15 @@ void SharedRuntime::generate_deopt_blob() {
+@@ -2550,6 +2549,15 @@ void SharedRuntime::generate_deopt_blob() {
  #endif
  }
  
@@ -220,7 +220,7 @@ index a4216785e4e..cb139977684 100644
    int slot = 0;
    int ireg = 0;
    int freg = 0;
-@@ -1367,11 +1365,18 @@ int Deoptimization::last_frame_adjust(int callee_parameters, int callee_locals)
+@@ -1366,11 +1364,18 @@ int Deoptimization::last_frame_adjust(int callee_parameters, int callee_locals)
  }
  
  
@@ -436,7 +436,7 @@ index 3e2b3a118c7..fd6c7ab5f70 100644
    uint    stack = 0;          // Starting stack position for args on stack
  
  
-@@ -2216,6 +2215,14 @@ int Deoptimization::last_frame_adjust(int callee_parameters, int callee_locals )
+@@ -2215,6 +2214,14 @@ int Deoptimization::last_frame_adjust(int callee_parameters, int callee_locals )
  }
  
  
@@ -465,7 +465,7 @@ index b238b0e0d35..635ea4288c9 100644
  
    // Create the mapping between argument positions and
    // registers.
-@@ -2439,6 +2438,15 @@ uint SharedRuntime::out_preserve_stack_slots() {
+@@ -2438,6 +2437,15 @@ uint SharedRuntime::out_preserve_stack_slots() {
    return 0;
  }
  
@@ -734,7 +734,7 @@ diff --git a/src/hotspot/share/adlc/output_c.cpp b/src/hotspot/share/adlc/output
 index c6083533b58..a044ceab00b 100644
 --- a/src/hotspot/share/adlc/output_c.cpp
 +++ b/src/hotspot/share/adlc/output_c.cpp
-@@ -4159,29 +4159,15 @@ void ArchDesc::buildFrameMethods(FILE *fp_cpp) {
+@@ -4160,29 +4160,15 @@ void ArchDesc::buildFrameMethods(FILE *fp_cpp) {
      fprintf(fp_cpp," return OptoReg::stack2reg(%s); }\n\n",
              _frame->_return_addr);
    }
@@ -783,7 +783,7 @@ diff --git a/src/hotspot/share/code/nmethod.cpp b/src/hotspot/share/code/nmethod
 index 4e21b69836b..9f03c16ef96 100644
 --- a/src/hotspot/share/code/nmethod.cpp
 +++ b/src/hotspot/share/code/nmethod.cpp
-@@ -3228,7 +3228,7 @@ void nmethod::print_nmethod_labels(outputStream* stream, address block_begin, bo
+@@ -3237,7 +3237,7 @@ void nmethod::print_nmethod_labels(outputStream* stream, address block_begin, bo
          assert(sig_index == sizeargs, "");
        }
        const char* spname = "sp"; // make arch-specific?
@@ -887,7 +887,7 @@ index 0846cad3c3f..a06252cab8a 100644
  
      // And mask for same
      _return_value_mask = RegMask(regs.first());
-@@ -757,7 +757,7 @@ void Matcher::Fixup_Save_On_Entry( ) {
+@@ -760,7 +760,7 @@ void Matcher::Fixup_Save_On_Entry( ) {
    uint reth_edge_cnt = TypeFunc::Parms+1;
    RegMask *reth_rms  = init_input_masks( reth_edge_cnt + soe_cnt, _return_addr_mask, c_frame_ptr_mask );
    // Rethrow takes exception oop only, but in the argument 0 slot.
@@ -896,7 +896,7 @@ index 0846cad3c3f..a06252cab8a 100644
    if (reg >= 0) {
      reth_rms[TypeFunc::Parms] = mreg2regmask[reg];
  #ifdef _LP64
-@@ -2019,10 +2019,10 @@ void Matcher::ReduceOper( State *s, int rule, Node *&mem, MachNode *mach ) {
+@@ -2022,10 +2022,10 @@ void Matcher::ReduceOper( State *s, int rule, Node *&mem, MachNode *mach ) {
  
  //------------------------------find_receiver----------------------------------
  // For a given signature, return the OptoReg for parameter 0.
@@ -952,7 +952,7 @@ diff --git a/src/hotspot/share/runtime/sharedRuntime.cpp b/src/hotspot/share/run
 index 95369e6272e..ef2b688c7f1 100644
 --- a/src/hotspot/share/runtime/sharedRuntime.cpp
 +++ b/src/hotspot/share/runtime/sharedRuntime.cpp
-@@ -1895,8 +1895,7 @@ void SharedRuntime::check_member_name_argument_is_last_argument(const methodHand
+@@ -1898,8 +1898,7 @@ void SharedRuntime::check_member_name_argument_is_last_argument(const methodHand
    assert(member_arg_pos >= 0 && member_arg_pos < total_args_passed, "oob");
    assert(sig_bt[member_arg_pos] == T_OBJECT, "dispatch argument must be an object");
  
@@ -962,7 +962,7 @@ index 95369e6272e..ef2b688c7f1 100644
  
    for (int i = 0; i < member_arg_pos; i++) {
      VMReg a =    regs_with_member_name[i].first();
-@@ -2893,7 +2892,7 @@ AdapterHandlerEntry* AdapterHandlerLibrary::get_adapter0(const methodHandle& met
+@@ -2899,7 +2898,7 @@ AdapterHandlerEntry* AdapterHandlerLibrary::get_adapter0(const methodHandle& met
    VMRegPair* regs = (total_args_passed <= 16) ? stack_regs : NEW_RESOURCE_ARRAY(VMRegPair, total_args_passed);
  
    // Get a description of the compiled java calling convention and the largest used (VMReg) stack slot usage
@@ -971,7 +971,7 @@ index 95369e6272e..ef2b688c7f1 100644
    BufferBlob* buf = buffer_blob(); // the temporary code buffer in CodeCache
    CodeBuffer buffer(buf);
    short buffer_locs[20];
-@@ -3069,11 +3068,8 @@ void AdapterHandlerLibrary::create_native_wrapper(const methodHandle& method) {
+@@ -3075,11 +3074,8 @@ void AdapterHandlerLibrary::create_native_wrapper(const methodHandle& method) {
        assert(si.slots() == total_args_passed, "");
        BasicType ret_type = si.return_type();
  
@@ -985,7 +985,7 @@ index 95369e6272e..ef2b688c7f1 100644
  
        // Generate the compiled-to-native wrapper code
        nm = SharedRuntime::generate_native_wrapper(&_masm, method, compile_id, sig_bt, regs, ret_type, critical_entry);
-@@ -3117,7 +3113,7 @@ void AdapterHandlerLibrary::create_native_wrapper(const methodHandle& method) {
+@@ -3123,7 +3119,7 @@ void AdapterHandlerLibrary::create_native_wrapper(const methodHandle& method) {
  VMReg SharedRuntime::name_for_receiver() {
    VMRegPair regs;
    BasicType sig_bt = T_OBJECT;
@@ -994,7 +994,7 @@ index 95369e6272e..ef2b688c7f1 100644
    // Return argument 0 register.  In the LP64 build pointers
    // take 2 registers, but the VM wants only the 'main' name.
    return regs.first();
-@@ -3148,7 +3144,7 @@ VMRegPair *SharedRuntime::find_callee_arguments(Symbol* sig, bool has_receiver,
+@@ -3154,7 +3150,7 @@ VMRegPair *SharedRuntime::find_callee_arguments(Symbol* sig, bool has_receiver,
    assert(cnt < 256, "grow table size");
  
    int comp_args_on_stack;

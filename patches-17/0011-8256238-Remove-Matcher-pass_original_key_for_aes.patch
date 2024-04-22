@@ -14,15 +14,15 @@ diff --git a/src/hotspot/share/opto/library_call.cpp b/src/hotspot/share/opto/li
 index a9acf673318..43028fdb56f 100644
 --- a/src/hotspot/share/opto/library_call.cpp
 +++ b/src/hotspot/share/opto/library_call.cpp
-@@ -5980,22 +5980,10 @@ bool LibraryCallKit::inline_aescrypt_Block(vmIntrinsics::ID id) {
+@@ -5988,22 +5988,10 @@ bool LibraryCallKit::inline_aescrypt_Block(vmIntrinsics::ID id) {
    Node* k_start = get_key_start_from_aescrypt_object(aescrypt_object);
-   if (k_start == NULL) return false;
+   if (k_start == nullptr) return false;
  
 -#ifdef SPARC
 -    // on SPARC we need to pass the original key since key expansion needs to happen in intrinsics due to
 -    // compatibility issues between Java key expansion and SPARC crypto instructions
 -    Node* original_k_start = get_original_key_start_from_aescrypt_object(aescrypt_object);
--    if (original_k_start == NULL) return false;
+-    if (original_k_start == nullptr) return false;
 -
 -    // Call the stub.
 -    make_runtime_call(RC_LEAF|RC_NO_FP, OptoRuntime::aescrypt_block_Type(),
@@ -41,8 +41,8 @@ index a9acf673318..43028fdb56f 100644
  
    return true;
  }
-@@ -6078,25 +6066,11 @@ bool LibraryCallKit::inline_cipherBlockChaining_AESCrypt(vmIntrinsics::ID id) {
-   if (objRvec == NULL) return false;
+@@ -6086,25 +6074,11 @@ bool LibraryCallKit::inline_cipherBlockChaining_AESCrypt(vmIntrinsics::ID id) {
+   if (objRvec == nullptr) return false;
    Node* r_start = array_element_address(objRvec, intcon(0), T_BYTE);
  
 -  Node* cbcCrypt;
@@ -50,7 +50,7 @@ index a9acf673318..43028fdb56f 100644
 -    // on SPARC we need to pass the original key since key expansion needs to happen in intrinsics due to
 -    // compatibility issues between Java key expansion and SPARC crypto instructions
 -    Node* original_k_start = get_original_key_start_from_aescrypt_object(aescrypt_object);
--    if (original_k_start == NULL) return false;
+-    if (original_k_start == nullptr) return false;
 -
 -    // Call the stub, passing src_start, dest_start, k_start, r_start, src_len and original_k_start
 -    cbcCrypt = make_runtime_call(RC_LEAF|RC_NO_FP,
@@ -72,9 +72,9 @@ index a9acf673318..43028fdb56f 100644
  
    // return cipher length (int)
    Node* retvalue = _gvn.transform(new ProjNode(cbcCrypt, TypeFunc::Parms));
-@@ -6175,16 +6149,11 @@ bool LibraryCallKit::inline_electronicCodeBook_AESCrypt(vmIntrinsics::ID id) {
+@@ -6183,16 +6157,11 @@ bool LibraryCallKit::inline_electronicCodeBook_AESCrypt(vmIntrinsics::ID id) {
    Node* k_start = get_key_start_from_aescrypt_object(aescrypt_object);
-   if (k_start == NULL) return false;
+   if (k_start == nullptr) return false;
  
 -  Node* ecbCrypt;
 -#ifdef SPARC
@@ -93,7 +93,7 @@ index a9acf673318..43028fdb56f 100644
  
    // return cipher length (int)
    Node* retvalue = _gvn.transform(new ProjNode(ecbCrypt, TypeFunc::Parms));
-@@ -6259,16 +6228,11 @@ bool LibraryCallKit::inline_counterMode_AESCrypt(vmIntrinsics::ID id) {
+@@ -6267,16 +6236,11 @@ bool LibraryCallKit::inline_counterMode_AESCrypt(vmIntrinsics::ID id) {
    Node* saved_encCounter_start = array_element_address(saved_encCounter, intcon(0), T_BYTE);
    Node* used = field_address_from_object(counterMode_object, "used", "I", /*is_exact*/ false);
  
@@ -114,7 +114,7 @@ index a9acf673318..43028fdb56f 100644
  
    // return cipher length (int)
    Node* retvalue = _gvn.transform(new ProjNode(ctrCrypt, TypeFunc::Parms));
-@@ -6300,17 +6264,6 @@ Node * LibraryCallKit::get_key_start_from_aescrypt_object(Node *aescrypt_object)
+@@ -6308,17 +6272,6 @@ Node * LibraryCallKit::get_key_start_from_aescrypt_object(Node *aescrypt_object)
    return k_start;
  }
  
@@ -136,7 +136,7 @@ diff --git a/src/hotspot/share/opto/library_call.hpp b/src/hotspot/share/opto/li
 index 476e1098fbf..cfff1d1052b 100644
 --- a/src/hotspot/share/opto/library_call.hpp
 +++ b/src/hotspot/share/opto/library_call.hpp
-@@ -279,7 +279,6 @@ class LibraryCallKit : public GraphKit {
+@@ -275,7 +275,6 @@ class LibraryCallKit : public GraphKit {
    Node* inline_electronicCodeBook_AESCrypt_predicate(bool decrypting);
    Node* inline_counterMode_AESCrypt_predicate();
    Node* get_key_start_from_aescrypt_object(Node* aescrypt_object);
