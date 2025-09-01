@@ -14,7 +14,7 @@ fi
 # OpenJDK 13 is first version built using GCC (no need for Solaris Studio).
 # OpenJDK 16 is needed to bootstrap LTS version 17.
 
-for VERSION in 13 16; do
+for VERSION in 13 16 20; do
   if [ $VERSION -lt 12 ] ; then
     JAVADIR="./build_dir/jdk${VERSION}u/build/solaris-$JDK_PLATFORM-normal-server-release/jdk"
   else
