@@ -21,7 +21,7 @@ CONFIGURE_OPTIONS+=" DATE=/usr/gnu/bin/date"
 
 git clone ${JDK_GITHUB_REPO}/$SRC_DIR "$BUILD_DIR"/$SRC_DIR
 cd "$BUILD_DIR"/$SRC_DIR
-git checkout jdk-21-ga
+git checkout jdk-21.0.8-ga
 
 apply_patch_series
 

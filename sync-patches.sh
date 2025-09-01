@@ -7,7 +7,7 @@ JDKTAG=$2
 TMPFILE=`mktemp`
 
 ls -1 | grep -v ^series | grep -v ^Solaris-* | while read f; do
- curl -s -o $TMPFILE "https://raw.githubusercontent.com/ptribble/jdk-sunos-patches/master/jdk${JDKVER}/jdk${JDKVER}u-${JDKTAG}/$f"
+ curl -s -o $TMPFILE "https://raw.githubusercontent.com/ptribble/jdk-sunos-patches/refs/heads/master/jdk${JDKVER}/${JDKTAG}/$f"
  cmp $TMPFILE $f > /dev/null
  if [ $? -ne 0 ] ; then
    echo "File $f differ. Updating..."
