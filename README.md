@@ -54,6 +54,8 @@ After the build you should inspect build_dir/ for your OpenJDK binaries.
 
 Your build log files will be available in logs/ directory.
 
+## Creating archives
+
 You can use then archives.sh script which will create tar archives.
 
 Note also archives-bootstrap.sh which currently creates minimal archive
@@ -64,7 +66,7 @@ compiler).
 openjdk-13.0.11-bootstrap_SunOS-i386_bin.tar.xz should be available for
 download. The minimal OS version is Solaris 11.4 CBE release [2].
 
---
+## Using --build-from
 
 You can also build only newer OpenJDK versions. E.g. when you previously
 built older version and have them ready in your `build_dir` for
@@ -81,9 +83,9 @@ Alternately you can use your own bootstrap version.
 ./build-all.sh --build-from=17 --boot-jdk=/export/home/build/jdk-16-bootstrap
 ```
 
---
+## bootstrap-lts-jdk.sh
 
-Or alternatively you can build OpenJDK LTS version 21 (i386 only) or 17 using
+Or you can build OpenJDK LTS version 21 (i386 only) or 17 using
 bootstrap archives with `bootstrap-lts-jdk.sh`:
 
 ```
@@ -108,7 +110,7 @@ Creating archive /home/test/solaris-openjdk/archives/openjdk-21.0.8_SunOS-i386_b
 
 ```
 
---
+## Notes
 
 [1] JDK 8 is needed only for OpenJDK 9. Solaris Studio is needed only for
     OpenJDK 9, 10, 11 and 12. See example with `--build-from=[NUM]`.

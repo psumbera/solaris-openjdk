@@ -14,7 +14,7 @@ GITHUB_URL="https://github.com/psumbera/solaris-openjdk/releases/download"
 arch=$(uname -m)
 
 if [[ "$VERSION" -eq 17 ]]; then
-    BOOTSRAP_OPENJDK_URL=${GITHUB_URL}/openjdk${BOOTSTRAP_VERSION}-bootstrap/openjdk-${BOOTSTRAP_VERSION}.0.2-bootstrap_SunOS-i386_bin.tar.xz
+    BOOTSRAP_OPENJDK_URL=${GITHUB_URL}/openjdk${BOOTSTRAP_VERSION}-bootstrap/openjdk-${BOOTSTRAP_VERSION}.0.2-bootstrap_SunOS-`mach`_bin.tar.xz
     total_lines=73880
 elif [[ "$VERSION" -eq 21 && "$arch" == "i86pc" ]]; then
     BOOTSRAP_OPENJDK_URL=${GITHUB_URL}/openjdk${BOOTSTRAP_VERSION}-i386-bootstrap/openjdk-${BOOTSTRAP_VERSION}-bootstrap_SunOS-i386_bin.tar.xz
