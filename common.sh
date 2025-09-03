@@ -25,9 +25,24 @@ STUDIO="/opt/solarisstudio12.4/bin"
 if [ -d /usr/gcc/10 ] ; then
 GCC=/usr/gcc/10/bin/gcc
 GXX=/usr/gcc/10/bin/g++
-else
+elif [ -d /usr/gcc/11 ] ; then
 GCC=/usr/gcc/11/bin/gcc
 GXX=/usr/gcc/11/bin/g++
+elif [ -d /usr/gcc/12 ] ; then
+GCC=/usr/gcc/12/bin/gcc
+GXX=/usr/gcc/12/bin/g++
+elif [ -d /usr/gcc/13 ] ; then
+GCC=/usr/gcc/13/bin/gcc
+GXX=/usr/gcc/13/bin/g++
+elif [ -d /usr/gcc/14 ] ; then
+GCC=/usr/gcc/14/bin/gcc
+GXX=/usr/gcc/14/bin/g++
+elif [ -d /usr/gcc/15 ] ; then
+GCC=/usr/gcc/15/bin/gcc
+GXX=/usr/gcc/15/bin/g++
+else
+GCC=/usr/bin/gcc
+GXX=/usr/bin/g++
 fi
 
 mkdir -p "$BUILD_DIR"

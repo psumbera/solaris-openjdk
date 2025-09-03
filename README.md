@@ -83,6 +83,33 @@ Alternately you can use your own bootstrap version.
 
 --
 
+Or alternatively you can build OpenJDK LTS version 21 (i386 only) or 17 using
+bootstrap archives with `bootstrap-lts-jdk.sh`:
+
+```
+git clone https://github.com/psumbera/solaris-openjdk.git
+cd solaris-openjdk/
+./bootstrap-lts-jdk.sh 21
+Downloading OpenJDK 20 boostrap version...                                                                           
+############################################################################################################################################################################################################ 100.0%
+Extraxcting it...                                                                                                    
+Clonning OpenJDK source repo...
+Cloning into './jdk21u-5SImGb/jdk21u'...                                                                             
+remote: Enumerating objects: 1386884, done.
+remote: Counting objects: 100% (13559/13559), done.                                                                  
+remote: Compressing objects: 100% (4210/4210), done.
+remote: Total 1386884 (delta 10025), reused 9381 (delta 9343), pack-reused 1373325 (from 4)                          
+Receiving objects: 100% (1386884/1386884), 1.10 GiB | 9.33 MiB/s, done.
+Resolving deltas: 100% (1029432/1029432), done.                                                                      
+Updating files: 100% (68594/68594), done.
+Building OpenJDK 21 (/home/test/solaris-openjdk/build.log)...                                                   
+0:05:09 [=======================================================================================================================================================================================>] 100%            
+Creating archive /home/test/solaris-openjdk/archives/openjdk-21.0.8_SunOS-i386_bin.tar.xz
+
+```
+
+--
+
 [1] JDK 8 is needed only for OpenJDK 9. Solaris Studio is needed only for
     OpenJDK 9, 10, 11 and 12. See example with `--build-from=[NUM]`.
 

@@ -41,6 +41,7 @@ required_bins=(
   /usr/bin/find
   /usr/bin/gawk
   /usr/bin/gcc
+  /usr/bin/g++
   /usr/bin/ggrep
   /usr/bin/git
   /usr/bin/gmake
@@ -98,7 +99,7 @@ git clone https://github.com/openjdk/jdk${VERSION}u $tmpdir/jdk${VERSION}u
 
 # Building
 
-echo "Building OpenJDK ${VERSION}.."
+echo "Building OpenJDK ${VERSION} ($(pwd)/build.log)..."
 JDK_GITHUB_REPO=$(pwd)/$tmpdir  BOOT_JDK=$(pwd)/jdk-${BOOTSTRAP_VERSION}-bootstrap bash jdk-${VERSION}.sh 2>&1 | tee build.log | pv -l -s $total_lines -p -t -e > /dev/null
 
 # Create archive
