@@ -1,4 +1,4 @@
-iname: Solaris CI
+name: Solaris CI
 
 on:
   push:
