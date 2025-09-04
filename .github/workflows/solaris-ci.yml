@@ -1,0 +1,24 @@
+iname: Solaris CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build-on-solaris:
+    name: Build & Archive on Solaris
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build project inside Solaris VM
+        uses: vmactions/solaris-vm@1.1.1
+        with:
+          usesh: true
+          prepare: |
+            uname -a
+            prtidag -v
+          run: |
+            ls
+            ./bootstrap-lts-jdk.sh 21
+
