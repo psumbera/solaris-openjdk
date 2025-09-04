@@ -17,8 +17,6 @@ jobs:
           usesh: true
           prepare: |
             uname -a
-            prtconf | grep "Memory size"
           run: |
-            ls
             ./bootstrap-lts-jdk.sh 21
 
