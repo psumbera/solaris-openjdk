@@ -14,7 +14,9 @@ jobs:
       - name: Build project inside Solaris VM
         uses: vmactions/solaris-vm@v1.1.1
         with:
+          release: "11.4-gcc"
           usesh: true
+          copyback: false
           prepare: |
             uname -a
           run: |
