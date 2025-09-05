@@ -20,11 +20,12 @@ jobs:
           prepare: |
             uname -a
           run: |
-            curl -o openjdk-20-bootstrap_SunOS-i386_bin.tar.xz --progress-bar -L https://github.com/psumbera/solaris-openjdk/releases/download/openjdk20-i386-bootstrap/openjdk-20-bootstrap_SunOS-i386_bin.tar.xz
-            gtar xf openjdk-20-bootstrap_SunOS-i386_bin.tar.xz
+            #curl -o openjdk-20-bootstrap_SunOS-i386_bin.tar.xz --progress-bar -L https://github.com/psumbera/solaris-openjdk/releases/download/openjdk20-i386-bootstrap/openjdk-20-bootstrap_SunOS-i386_bin.tar.xz
+            #gtar xf openjdk-20-bootstrap_SunOS-i386_bin.tar.xz
             #BOOT_JDK=$(pwd)/jdk-20-bootstrap bash jdk-21.sh
             ./archives.sh
             mkdir -p /workspace/archives
+            echo test > /workspace/archives/openjdk-21-SunOS-i386_bin.tar.xz
             mv archives/* /workspace/archives/
             ls -l mv /workspace/archives/
 
