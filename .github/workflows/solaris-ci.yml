@@ -33,7 +33,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: openjdk-21-latest_SunOS-i386_bin
-          path: archives/*
-          run: |
-            pwd
-            ls
+          path: /workspace/archives/*
