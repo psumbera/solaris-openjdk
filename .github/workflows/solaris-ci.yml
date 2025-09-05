@@ -22,13 +22,17 @@ jobs:
           run: |
             curl -o openjdk-20-bootstrap_SunOS-i386_bin.tar.xz --progress-bar -L https://github.com/psumbera/solaris-openjdk/releases/download/openjdk20-i386-bootstrap/openjdk-20-bootstrap_SunOS-i386_bin.tar.xz
             gtar xf openjdk-20-bootstrap_SunOS-i386_bin.tar.xz
-            BOOT_JDK=$(pwd)/jdk-20-bootstrap bash jdk-21.sh
+            #BOOT_JDK=$(pwd)/jdk-20-bootstrap bash jdk-21.sh
             ./archives.sh
             mkdir -p /workspace/archives
             mv archives/* /workspace/archives/
+            ls -l mv /workspace/archives/
 
       - name: Upload Solaris build artifact
         uses: actions/upload-artifact@v4
         with:
           name: openjdk-21-latest_SunOS-i386_bin
           path: archives/*
+          run: |
+            pwd
+            ls
