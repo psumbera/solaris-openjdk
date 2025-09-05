@@ -24,6 +24,8 @@ jobs:
             gtar xf openjdk-20-bootstrap_SunOS-i386_bin.tar.xz
             BOOT_JDK=$(pwd)/jdk-20-bootstrap bash jdk-21.sh
             ./archives.sh
+            mkdir -p /workspace/archives
+            cp -v archives/* /workspace/archives/
 
       - name: Upload Solaris build artifact
         uses: actions/upload-artifact@v4
