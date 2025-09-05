@@ -100,7 +100,7 @@ git clone https://github.com/openjdk/jdk${VERSION}u $tmpdir/jdk${VERSION}u
 # Building
 
 echo "Building OpenJDK ${VERSION} ($(pwd)/build.log)..."
-JDK_GITHUB_REPO=$(pwd)/$tmpdir  BOOT_JDK=$(pwd)/jdk-${BOOTSTRAP_VERSION}-bootstrap bash jdk-${VERSION}.sh 2>&1 | tee build.log | pv -l -s $total_lines -p -t -e > /dev/null
+LOG=debug JDK_GITHUB_REPO=$(pwd)/$tmpdir  BOOT_JDK=$(pwd)/jdk-${BOOTSTRAP_VERSION}-bootstrap bash jdk-${VERSION}.sh 2>&1 | tee build.log | pv -l -s $total_lines -p -t -e > /dev/null
 
 # Create archive
 

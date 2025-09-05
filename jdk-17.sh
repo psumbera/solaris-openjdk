@@ -25,4 +25,4 @@ git checkout jdk-17.0.11-ga
 apply_patch_series
 
 PATH="$PATH" bash ./configure ${CONFIGURE_OPTIONS} 
-gmake LOG=debug bundles
+gmake LOG=${LOG} bundles
