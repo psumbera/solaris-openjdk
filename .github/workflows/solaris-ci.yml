@@ -24,8 +24,9 @@ jobs:
             #gtar xf openjdk-20-bootstrap_SunOS-i386_bin.tar.xz
             #BOOT_JDK=$(pwd)/jdk-20-bootstrap bash jdk-21.sh
             ./archives.sh
+            mkdir archives
+            echo test > archives/openjdk-21-SunOS-i386_bin.tar.xz
             mkdir -p /workspace/archives
-            echo test > /workspace/archives/openjdk-21-SunOS-i386_bin.tar.xz
             mv archives/* /workspace/archives/
             ls -l mv /workspace/archives/
 
