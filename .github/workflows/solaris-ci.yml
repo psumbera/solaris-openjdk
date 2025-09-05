@@ -26,9 +26,7 @@ jobs:
             #BOOT_JDK=$(pwd)/jdk-20-bootstrap bash jdk-21.sh
             ./archives.sh
             echo test > archives/openjdk-21-SunOS-i386_bin.tar.xz
-            mkdir -p /workspace/archives
-            mv archives/* /workspace/archives/
-            ls -l /workspace/archives/
+            pwd
             mount
 
       - name: Upload Solaris build artifact
