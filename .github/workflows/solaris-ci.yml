@@ -1,4 +1,4 @@
-name: Solaris CI
+name: Solaris CI - OpenJDK 21
 
 on:
   push:
@@ -28,5 +28,5 @@ jobs:
       - name: Upload Solaris build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: solaris-binary
-          path: /home/runner/work/solaris-openjdk/solaris-openjdk/archives/*
+          name: openjdk-21-latest_SunOS-i386_bin
+          path: archives/*
