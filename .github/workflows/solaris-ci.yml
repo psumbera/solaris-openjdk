@@ -25,7 +25,7 @@ jobs:
             BOOT_JDK=$(pwd)/jdk-20-bootstrap bash jdk-21.sh
             ./archives.sh
             mkdir -p /workspace/archives
-            cp -v archives/* /workspace/archives/
+            mv archives/* /workspace/archives/
 
       - name: Upload Solaris build artifact
         uses: actions/upload-artifact@v4
