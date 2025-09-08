@@ -1,0 +1,46 @@
+name: OpenJDK 21
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'archives.sh'
+      - 'common.sh'
+      - 'jdk-21.sh'
+      - 'patches-21/**'
+  pull_request:
+
+jobs:
+  build-on-solaris:
+    name: Build & Archive on Solaris
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build project inside Solaris VM
+        uses: vmactions/solaris-vm@v1.1.1
+        with:
+          release: "11.4-gcc"
+          usesh: true
+          sync: nfs
+          copyback: false
+          prepare: |
+            uname -a
+          run: |
+            REPO=`pwd`
+            # avoid problems when building on NFS from Linux
+            git clone $REPO /var/tmp/openjdk
+            cd /var/tmp/openjdk
+            # download bootstrap JDK version
+            curl -o jdk-20-bootstrap.tar.xz --progress-bar -L https://github.com/psumbera/solaris-openjdk/releases/download/openjdk20-i386-bootstrap/openjdk-20-bootstrap_SunOS-i386_bin.tar.xz
+            gtar xf jdk-20-bootstrap.tar.xz
+            BOOT_JDK=$(pwd)/jdk-20-bootstrap bash jdk-21.sh
+            ./archives.sh
+            # copy archive back to NFS shared area
+            mkdir $REPO/archives
+            mv archives/* $REPO/archives/
+
+      - name: Upload Solaris build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: openjdk-21-latest_SunOS-i386_bin
+          path: archives/*

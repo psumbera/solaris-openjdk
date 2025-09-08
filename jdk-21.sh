@@ -26,4 +26,4 @@ git checkout jdk-21.0.8-ga
 apply_patch_series
 
 PATH="$PATH" bash ./configure ${CONFIGURE_OPTIONS} 
-gmake LOG=debug bundles
+gmake LOG=${LOG} bundles
