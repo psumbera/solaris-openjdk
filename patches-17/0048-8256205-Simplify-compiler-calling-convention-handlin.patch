@@ -244,7 +244,7 @@ diff --git a/src/hotspot/cpu/ppc/ppc.ad b/src/hotspot/cpu/ppc/ppc.ad
 index 27dad6cff94..8bbbc3d4aa3 100644
 --- a/src/hotspot/cpu/ppc/ppc.ad
 +++ b/src/hotspot/cpu/ppc/ppc.ad
-@@ -3764,8 +3764,6 @@ frame %{
+@@ -3775,8 +3775,6 @@ frame %{
  
    stack_alignment(frame::alignment_in_bytes);
  
@@ -253,7 +253,7 @@ index 27dad6cff94..8bbbc3d4aa3 100644
    // Number of outgoing stack slots killed above the
    // out_preserve_stack_slots for calls to C. Supports the var-args
    // backing area for register parms.
-@@ -3790,40 +3788,6 @@ frame %{
+@@ -3801,40 +3799,6 @@ frame %{
    //    4 what apparently works and saves us some spills.
    return_addr(STACK 4);
  
@@ -323,7 +323,7 @@ diff --git a/src/hotspot/cpu/s390/s390.ad b/src/hotspot/cpu/s390/s390.ad
 index 98194c73047..9a574ac0854 100644
 --- a/src/hotspot/cpu/s390/s390.ad
 +++ b/src/hotspot/cpu/s390/s390.ad
-@@ -2366,8 +2366,6 @@ frame %{
+@@ -2368,8 +2368,6 @@ frame %{
    // Use alignment_in_bytes instead of log_2_of_alignment_in_bits.
    stack_alignment(frame::alignment_in_bytes);
  
@@ -332,7 +332,7 @@ index 98194c73047..9a574ac0854 100644
    // A `slot' is assumed 4 bytes here!
    // out_preserve_stack_slots(frame::jit_out_preserve_size_in_4_byte_units);
  
-@@ -2382,38 +2380,6 @@ frame %{
+@@ -2384,38 +2382,6 @@ frame %{
    // stack slot.
    return_addr(REG Z_R14);
  
@@ -589,7 +589,7 @@ diff --git a/src/hotspot/share/adlc/adlparse.cpp b/src/hotspot/share/adlc/adlpar
 index 7d62f861686..ecb722c56b2 100644
 --- a/src/hotspot/share/adlc/adlparse.cpp
 +++ b/src/hotspot/share/adlc/adlparse.cpp
-@@ -1019,7 +1019,8 @@ void ADLParser::frame_parse(void) {
+@@ -1020,7 +1020,8 @@ void ADLParser::frame_parse(void) {
          return_addr_parse(frame, false);
        }
        if (strcmp(token,"in_preserve_stack_slots")==0) {
@@ -599,7 +599,7 @@ index 7d62f861686..ecb722c56b2 100644
        }
        if (strcmp(token,"out_preserve_stack_slots")==0) {
          parse_err(WARN, "Using obsolete token, out_preserve_stack_slots");
-@@ -1029,7 +1030,8 @@ void ADLParser::frame_parse(void) {
+@@ -1030,7 +1031,8 @@ void ADLParser::frame_parse(void) {
          frame->_varargs_C_out_slots_killed = parse_one_arg("varargs C out slots killed");
        }
        if (strcmp(token,"calling_convention")==0) {
@@ -609,7 +609,7 @@ index 7d62f861686..ecb722c56b2 100644
        }
        if (strcmp(token,"return_value")==0) {
          frame->_return_value = return_value_parse();
-@@ -1041,7 +1043,8 @@ void ADLParser::frame_parse(void) {
+@@ -1042,7 +1044,8 @@ void ADLParser::frame_parse(void) {
          return_addr_parse(frame, true);
        }
        if (strcmp(token,"c_calling_convention")==0) {
@@ -619,7 +619,7 @@ index 7d62f861686..ecb722c56b2 100644
        }
        if (strcmp(token,"c_return_value")==0) {
          frame->_c_return_value = return_value_parse();
-@@ -1072,18 +1075,10 @@ void ADLParser::frame_parse(void) {
+@@ -1073,18 +1076,10 @@ void ADLParser::frame_parse(void) {
      parse_err(SYNERR, "missing return address location in frame section.\n");
      return;
    }
@@ -638,7 +638,7 @@ index 7d62f861686..ecb722c56b2 100644
    if(frame->_return_value == NULL) {
      parse_err(SYNERR, "missing return value definition in frame section.\n");
      return;
-@@ -1096,9 +1091,6 @@ void ADLParser::frame_parse(void) {
+@@ -1097,9 +1092,6 @@ void ADLParser::frame_parse(void) {
      frame->_c_return_addr = frame->_return_addr;
      frame->_c_return_addr_loc = frame->_return_addr_loc;
    }
@@ -648,7 +648,7 @@ index 7d62f861686..ecb722c56b2 100644
    if(frame->_c_return_value == NULL) {
      frame->_c_return_value = frame->_return_value;
    }
-@@ -1221,37 +1213,9 @@ void ADLParser::return_addr_parse(FrameForm *frame, bool native) {
+@@ -1222,37 +1214,9 @@ void ADLParser::return_addr_parse(FrameForm *frame, bool native) {
    }
  }
  
@@ -734,7 +734,7 @@ diff --git a/src/hotspot/share/adlc/output_c.cpp b/src/hotspot/share/adlc/output
 index c6083533b58..a044ceab00b 100644
 --- a/src/hotspot/share/adlc/output_c.cpp
 +++ b/src/hotspot/share/adlc/output_c.cpp
-@@ -4160,29 +4160,15 @@ void ArchDesc::buildFrameMethods(FILE *fp_cpp) {
+@@ -4175,29 +4175,15 @@ void ArchDesc::buildFrameMethods(FILE *fp_cpp) {
      fprintf(fp_cpp," return OptoReg::stack2reg(%s); }\n\n",
              _frame->_return_addr);
    }

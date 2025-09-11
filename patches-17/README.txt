@@ -3,9 +3,62 @@ considerably modified. Cut from the jdk15 patches as of jdk15+32.
 
 See also README-zero.txt for patches to build a project zero variant.
 
-Most patches -p0
+17.0.16
 
-JDK17:
+Minor patch noise.
+
+Cleanup: remove unused check_addr0_done.
+
+Cleanup: remove the unshuffle_list.txt hunk.
+
+Cleanup: Move the mapfiles (symbol files) to the right place.
+
+Cleanup: Remove /usr/bin/sh override in PrintServiceLookupProvider.java.
+
+Cleanup: remove unused register stack functions. See the bug
+8253457: Remove unimplemented register stack functions
+The change for that not only removed the itanium only register
+stack functions, but also the base_of_stack_pointer routines
+which I keep for now as they were implemented and used on sparc.
+
+Cleanup: Remove unused global UseOSErrorReporting.
+
+17.0.14
+
+Minor patch noise.
+
+Cleanup: remove SPARC_WORKS
+
+Cleanup: remove 32-bit SSE check
+
+Cleanup: os::is_allocatable() is always true on 64-bit
+
+Cleanup: src/hotspot/os/solaris and src/hotspot/os_cpu/solaris_x86
+split out into separate restore patches.
+
+Cleanup: remove audio solaris 7 compatibility code
+
+Cleanup: remove unused JSIG_VERSION_1_4_1 define
+
+Cleanup: remove unused SOLARIS_MUTATOR_LIBTHREAD hunk
+
+17.0.13
+
+Drop the png patch. It no longer applies and appears unnecessary with
+the png update.
+
+Pipewire has been added, so need to patch that like wed id in jdk21.
+See illumos-port-20.patch.
+
+Cleanup: Since Solaris 10, fork() has always been fork1()
+
+17.0.12
+
+Removed last remnants of extended_FILE_stdio, it's unused as 32-bit
+only, and the code to enable it had already been removed.
+
+Extensive rework of
+src/jdk.jlink/share/classes/jdk/tools/jlink/internal/Platform.java
 
 17.0.11
 
@@ -327,12 +380,12 @@ _large_page_size) is initialized to the largest valid page size.
 Build:
 
 env PATH=/usr/bin:/usr/sbin:/usr/sfw/bin:/usr/gnu/bin bash ./configure \
---enable-unlimited-crypto --with-boot-jdk=/usr/jdk/instances/jdk16 \
+--enable-unlimited-crypto --with-boot-jdk=/usr/jdk/instances/jdk17 \
 --with-native-debug-symbols=none \
 --with-toolchain-type=gcc \
 --disable-dtrace \
 --disable-warnings-as-errors \
 --enable-deprecated-ports=yes \
---with-jobs=3
+--with-jobs=4
 
 env PATH=/usr/bin:/usr/sbin:/usr/sfw/bin:/usr/gnu/bin gmake all

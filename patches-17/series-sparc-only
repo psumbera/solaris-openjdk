@@ -17,3 +17,4 @@ sparc-safefetch.patch
 0001-8283520-JFR-Memory-leak-in-dcmd_arena.patch -R
 0001-8270491-SEGV-at-read_string_field-oopDesc-char-const.patch -R
 0001-8268702-JFR-diagnostic-commands-lack-argument-descri.patch -R
+sparc-noflatten.patch
