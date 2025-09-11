@@ -110,6 +110,14 @@ Creating archive /home/test/solaris-openjdk/archives/openjdk-21.0.8_SunOS-i386_b
 
 ```
 
+## Prebuilt Binary Archives (OpenJDK 17 & 21, i386 Only)
+
+Prebuilt binary archives are available for **OpenJDK 17** and **OpenJDK 21**, targeting **i386**:
+[GitHub Actions - solaris-openjdk builds](https://github.com/psumbera/solaris-openjdk/actions)
+
+The downloads are provided as `.zip` files.
+After unzipping, you will find a `.tar.xz` archive inside.
+
 ## Notes
 
 [1] JDK 8 is needed only for OpenJDK 9. Solaris Studio is needed only for
