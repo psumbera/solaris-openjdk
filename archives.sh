@@ -20,7 +20,7 @@ else
   JDK_PLATFORM="x86_64"
 fi
 
-for VERSION in {9..21}; do
+for VERSION in {9..25}; do
 
   if [ $VERSION -lt $BUILD_FROM_VER ] ; then
     echo "Skipping Openjdk $VERSION archive creation."
