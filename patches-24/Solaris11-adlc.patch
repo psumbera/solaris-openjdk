@@ -1,0 +1,17 @@
+Solaris 11.4 fails with SIZE_MAX undefined. On illumos, its gets pulled in
+transitively via stdlib.h. Explicitly add the correct include, but only if
+we need to.
+
+--- a/src/hotspot/share/adlc/adlc.hpp	2024-09-26 10:47:32.000000000 +0200
++++ b/src/hotspot/share/adlc/adlc.hpp	2025-02-10 17:12:03.693540148 +0100
+@@ -70,6 +70,10 @@
+   #include <inttypes.h>
+ #endif // LINUX || _ALLBSD_SOURCE
+ 
++#ifndef SIZE_MAX
++#include <stdint.h>
++#endif
++
+ // Macros
+ #define uint32 unsigned int
+ #define uint   unsigned int

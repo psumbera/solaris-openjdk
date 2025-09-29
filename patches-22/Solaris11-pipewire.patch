@@ -1,0 +1,13 @@
+Unlike illumos, Solaris appears not to have endian.h
+
+--- a/src/java.desktop/unix/native/libpipewire/include/spa/param/audio/raw.h	2024-06-06 15:02:02.501176529 +0200
++++ b/src/java.desktop/unix/native/libpipewire/include/spa/param/audio/raw.h	2024-06-06 14:59:22.531605425 +0200
+@@ -11,7 +11,7 @@
+ 
+ #include <stdint.h>
+ 
+-#if !defined(__FreeBSD__) && !defined(__MidnightBSD__) && !defined(AIX)
++#if !defined(__sun__) && !defined(__FreeBSD__) && !defined(__MidnightBSD__) && !defined(AIX)
+ #include <endian.h>
+ #endif
+ 

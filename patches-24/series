@@ -1,0 +1,42 @@
+java-solaris-sparc.patch -R
+illumos-port-2.patch
+illumos-port-3.patch
+illumos-port-5.patch
+illumos-port-6.patch
+illumos-port-7.patch
+illumos-port-10.patch
+illumos-port-11.patch
+illumos-port-12.patch
+illumos-port-16.patch
+illumos-port-17.patch
+illumos-port-18.patch
+illumos-port-20.patch
+illumos-port-21.patch
+illumos-port-22.patch
+illumos-port-23.patch
+illumos-port-24.patch
+illumos-port-25.patch
+illumos-port-26.patch
+illumos-port-27.patch
+illumos-port-28.patch
+illumos-port-29.patch
+illumos-signal-1.patch
+illumos-attachlistener.patch
+illumos-pollerprovider.patch
+illumos-zero-1.patch
+illumos-zero-2.patch
+jvmci-os.patch 
+patch-make_GenerateLinkOptData.gmk -p0
+patch-make_autoconf_flags-cflags.m4 -p0
+sparc-bitness.patch
+tribblix-flags-cflags.patch -p0
+tribblix-flags-ldflags.patch -p0
+tribblix-flags-ldflags3.patch -p0
+fastdebug.patch
+restore_os_cpu_solaris_x86.patch
+restore_os_solaris.patch
+testsuite.patch
+toolchain-clang.patch
+Solaris11-EM_486.patch -p0
+Solaris11-adlc.patch
+Solaris11-pipewire.patch -p1
