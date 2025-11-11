@@ -3,9 +3,9 @@ Note that this overwrites the illumos patch.
 
 --- a/src/java.desktop/unix/native/libpipewire/include/spa/utils/endian.h 2025-02-23 18:25:38.408833687 +0100
 +++ b/src/java.desktop/unix/native/libpipewire/include/spa/utils/endian.h 2025-02-23 19:12:32.797139470 +0100
-@@ -23,7 +23,6 @@
- #define __BIG_ENDIAN      BIG_ENDIAN
- #define __BYTE_ORDER      BIG_ENDIAN
+@@ -19,7 +19,6 @@
+ #define bswap_32 _byteswap_ulong
+ #define bswap_64 _byteswap_uint64
  #elif defined(SOLARIS)
 -#include <endian.h>
  #else

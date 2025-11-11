@@ -22,7 +22,7 @@ CONFIGURE_OPTIONS+=" LOCALE=/bin/true"
 
 git clone ${JDK_GITHUB_REPO}/$SRC_DIR "$BUILD_DIR"/$SRC_DIR
 cd "$BUILD_DIR"/$SRC_DIR
-git checkout jdk-25-ga
+git checkout jdk-25.0.1-ga
 
 apply_patch_series
 

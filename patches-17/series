@@ -33,7 +33,7 @@ illumos-zero-1.patch
 illumos-zero-2.patch
 sparc-bitness.patch
 testsuite.patch
-Solaris11-EM_486.patch -p1
+Solaris11-EM_486.patch -p0
 Solaris11-TRAPNO.patch -p1
 Solaris11-ssp.patch -p1
 Solaris11-pipewire.patch

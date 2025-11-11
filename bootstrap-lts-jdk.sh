@@ -15,12 +15,15 @@ arch=$(uname -m)
 
 if [[ "$VERSION" -eq 17 ]]; then
     BOOTSRAP_OPENJDK_URL=${GITHUB_URL}/openjdk${BOOTSTRAP_VERSION}-bootstrap/openjdk-${BOOTSTRAP_VERSION}.0.2-bootstrap_SunOS-`mach`_bin.tar.xz
-    total_lines=73880
+    total_lines=`mach | grep i386 > /dev/null && echo 133647 || echo 133139`
 elif [[ "$VERSION" -eq 21 && "$arch" == "i86pc" ]]; then
     BOOTSRAP_OPENJDK_URL=${GITHUB_URL}/openjdk${BOOTSTRAP_VERSION}-i386-bootstrap/openjdk-${BOOTSTRAP_VERSION}-bootstrap_SunOS-i386_bin.tar.xz
-    total_lines=101875
+    total_lines=101891
+elif [[ "$VERSION" -eq 25 && "$arch" == "i86pc" ]]; then
+    BOOTSRAP_OPENJDK_URL=${GITHUB_URL}/openjdk${BOOTSTRAP_VERSION}-i386-bootstrap/openjdk-${BOOTSTRAP_VERSION}.0.2-bootstrap_SunOS-i386_bin.tar.xz
+    total_lines=126740
 else
-    echo "Only OpenJDK 17 and 21 (i386) versions build is supported." >&2
+    echo "Only OpenJDK 17, 21 (i386) and 25 (i386) versions builds are supported." >&2
     exit 1
 fi
 
