@@ -1,6 +1,6 @@
 # Oracle Solaris OpenJDK Builder
 
-This project builds all OpenJDK versions from 9 till latest 21 for Solaris 11.4.
+This project builds all OpenJDK versions from 9 till latest 25 for Solaris 11.4.
 
 Note that this was done based on great job of Peter Tribble:
 https://ptribble.blogspot.com/2021/12/keeping-java-alive-on-illumos.html
@@ -85,7 +85,7 @@ Alternately you can use your own bootstrap version.
 
 ## bootstrap-lts-jdk.sh
 
-Or you can build OpenJDK LTS version 21 (i386 only) or 17 using
+Or you can build OpenJDK LTS version 25 and 21 (i386 only) or 17 using
 bootstrap archives with `bootstrap-lts-jdk.sh`:
 
 ```
@@ -110,9 +110,9 @@ Creating archive /home/test/solaris-openjdk/archives/openjdk-21.0.8_SunOS-i386_b
 
 ```
 
-## Prebuilt Binary Archives (OpenJDK 17 & 21, i386 Only)
+## Prebuilt Binary Archives (OpenJDK 17, 21 & 25 i386 Only)
 
-Prebuilt binary archives are available for **OpenJDK 17** and **OpenJDK 21**, targeting **i386**:
+Prebuilt binary archives are available for **OpenJDK 17**, **OpenJDK 21** and **OpenJDK 25**, targeting **i386**:
 [GitHub Actions - solaris-openjdk builds](https://github.com/psumbera/solaris-openjdk/actions)
 
 The downloads are provided as `.zip` files.
